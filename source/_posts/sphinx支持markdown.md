@@ -14,6 +14,7 @@ categories: python
     `pip install --upgrade recommonmark`
     注
     这里解释的配置需要重新注册版本0.5.0或更高版本。
+<!-- more -->
 
 2. config文件中：
 

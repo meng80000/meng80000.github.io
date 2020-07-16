@@ -8,6 +8,7 @@ categories: python
 ---
 
 ## 为什么要使用to_sql方法
+<!-- more -->
 - 表结构如下：
     ```sql
     CREATE TABLE `my_balance` (
@@ -20,7 +21,6 @@ categories: python
     ```
 
 - 现在要向my_balance表中插入一下数据，下面我们来看三段代码：
-<!-- more -->
 
 1. 普通pymysql sql insert 写法（强烈不推介这种写法）
     ```python

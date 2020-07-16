@@ -15,11 +15,11 @@ categories: ubuntu
 
     cd /usr/local/bin   //进入该目录中，若有node或者npm文件，将他删除删除
     ```
+<!-- more -->
 ### 2. 下载安装node.js
 去[node.js官网](https://nodejs.org/en/download/current/)下载最新版或者最稳定版的node.js Linux安装包
 ![imagl](1.png)
 
-<!-- more -->
 1. 下载解压
 
     `tar -xJf node-v8.5.0-linux-x64.tar.xz`  //解压命令
