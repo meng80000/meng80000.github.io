@@ -279,7 +279,7 @@
 
       
         <h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><h3 id="1-卸载已安装的Node和npm-！！！"><a href="#1-卸载已安装的Node和npm-！！！" class="headerlink" title="1. 卸载已安装的Node和npm ！！！"></a>1. 卸载已安装的Node和npm ！！！</h3><pre><code><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt remove npm  //卸载npm</span><br><span class="line">sudo apt remove <span class="keyword">node</span> <span class="title">//卸载node</span></span><br><span class="line"></span><br><span class="line">cd /usr/local/bin   //进入该目录中，若有<span class="keyword">node</span><span class="title">或者npm</span>文件，将他删除删除</span><br></pre></td></tr></table></figure></code></pre><a id="more"></a>
-<h3 id="2-下载安装node-js"><a href="#2-下载安装node-js" class="headerlink" title="2. 下载安装node.js"></a>2. 下载安装node.js</h3><p>去<a href="https://nodejs.org/en/download/current/" target="_blank" rel="noopener">node.js官网</a>下载最新版或者最稳定版的node.js Linux安装包<br><img src="1.png" alt="imagl"></p>
+<h3 id="2-下载安装node-js"><a href="#2-下载安装node-js" class="headerlink" title="2. 下载安装node.js"></a>2. 下载安装node.js</h3><p>去<a href="https://nodejs.org/en/download/current/" target="_blank" rel="noopener">node.js官网</a>下载最新版或者最稳定版的node.js Linux安装包<br><img src="/2020/07/15/Ubuntu%E5%AE%89%E8%A3%85%E6%9C%80%E6%96%B0%E7%89%88%E7%9A%84Node.js%E5%92%8Cnpm/1.png" alt="imagl"></p>
 <ol>
 <li><p>下载解压</p>
 <p> <code>tar -xJf node-v8.5.0-linux-x64.tar.xz</code>  //解压命令</p>
@@ -295,7 +295,7 @@
 </li>
 </ol>
 <p>此时，我们的环境搭建已经完毕</p>
-<p><img src="2.png" alt="imagl"></p>
+<p><img src="/2020/07/15/Ubuntu%E5%AE%89%E8%A3%85%E6%9C%80%E6%96%B0%E7%89%88%E7%9A%84Node.js%E5%92%8Cnpm/2.png" alt="imagl"></p>
 <h3 id="最后再补充一下设置淘宝镜像"><a href="#最后再补充一下设置淘宝镜像" class="headerlink" title="最后再补充一下设置淘宝镜像"></a>最后再补充一下设置淘宝镜像</h3><pre><code>sudo npm config set registry https://registry.npm.taobao.org   //设置淘宝镜像
 source ~/.bashrc       //使修改立即生效</code></pre><p><em>转载：<a href="https://blog.csdn.net/mrwangweijin/article/details/78106955" target="_blank" rel="noopener">https://blog.csdn.net/mrwangweijin/article/details/78106955</a></em></p>
 
