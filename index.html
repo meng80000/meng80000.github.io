@@ -202,7 +202,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-07-16 15:22:09 / 修改时间：16:21:38" itemprop="dateCreated datePublished" datetime="2020-07-16T15:22:09+08:00">2020-07-16</time>
+              <time title="创建时间：2020-07-16 15:22:09 / 修改时间：16:23:59" itemprop="dateCreated datePublished" datetime="2020-07-16T15:22:09+08:00">2020-07-16</time>
             </span>
 
           <!----->
@@ -248,85 +248,14 @@
           <p><img src="1.png" alt="1"></p>
 <p>完成Hexo本地运行后，会在本地文件里生成一个public文件夹。public文件夹内是根据.md生成的html文件，也就博客的静态文件。<br>通常情况下，我们执行：</p>
 <p><code>$ hexo d</code></p>
-<p>就是把public文件夹下的文件同步到github，然后就能通过 <a href="https://username.github.io/" target="_blank" rel="noopener">https://username.github.io/</a> 访问博客了。所以，我们的思路其实就是把静态文件和Hexo环境，分别存在username.github.io的master和hexo分支上。</p>
-<p>由于<code>hexo d</code>上传部署到github的其实是hexo编译后的文件，是用来生成网页的，不包含源文件。</p>
-<p><img src="2.png" alt="3"></p>
-<p>也就是上传的是在本地目录里自动生成的<code>.deploy_git</code>里面。</p>
-<p>其他文件 ，包括我们写在source 里面的，和配置文件，主题文件，都没有上传到github</p>
-<p><img src="3.png" alt="3"></p>
-<p>所以可以利用git的分支管理，将源文件上传到github的另一个分支即可。</p>
-<p>###上传分支</p>
-<p>首先，先在github上新建一个hexo分支，如图：</p>
-<p><img src="4.png" alt="4"></p>
-<p>然后在这个仓库的settings中，选择默认分支为hexo分支（这样每次同步的时候就不用指定分支，比较方便）。</p>
-<p><img src="5.png" alt="5"></p>
-<p>然后在本地的任意目录下，打开git bash，</p>
-<p><code>git clone git@github.com:ZJUFangzh/ZJUFangzh.github.io.git</code></p>
-<p>将其克隆到本地，因为默认分支已经设成了hexo，所以clone时只clone了hexo。</p>
-<p>接下来在克隆到本地的 <code>xxxx.github.io</code> 中，把除了.git 文件夹外的所有文件都删掉</p>
-<p>把之前我们写的博客源文件全部复制过来，除了<code>.deploy_git</code>。这里应该说一句，复制过来的源文件应该有一个<code>.gitignore</code>，用来忽略一些不需要的文件，如果没有的话，自己新建一个，在里面写上如下，表示这些类型文件不需要git：</p>
-<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.DS_Store</span></span><br><span class="line">Thumbs<span class="number">.</span><span class="built_in">db</span></span><br><span class="line"><span class="built_in">db</span><span class="number">.</span>json</span><br><span class="line">*.log</span><br><span class="line">node_modules/</span><br><span class="line"><span class="meta">public</span>/</span><br><span class="line"><span class="meta">.deploy</span>*/</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意，如果你之前克隆过theme中的主题文件，那么应该把主题文件中的.git文件夹删掉，因为git不能嵌套上传，最好是显示隐藏文件，检查一下有没有，否则上传的时候会出错，导致你的主题文件无法上传，这样你的配置在别的电脑上就用不了了。</strong></p>
-<p>而后</p>
-<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">add</span> .</span><br><span class="line">git commit –m <span class="string">"add branch"</span></span><br><span class="line">git <span class="keyword">push</span></span><br></pre></td></tr></table></figure>
-<p>这样就上传完了，可以去你的github上看一看hexo分支有没有上传上去，其中<code>node_modules</code>、<code>public</code>、<code>db.json</code>已经被忽略掉了，没有关系，不需要上传的，因为在别的电脑上需要重新输入命令安装 。</p>
-<p><img src="5.png" alt="5"></p>
-<p>这样就上传完了。</p>
-<h3 id="更换电脑操作"><a href="#更换电脑操作" class="headerlink" title="更换电脑操作"></a>更换电脑操作</h3><p>一样的，跟之前的环境搭建一样，</p>
-<ul>
-<li><p>安装git</p>
-<p>  <code>sudo apt-get install git</code></p>
-</li>
-<li><p>设置git全局邮箱和用户名</p>
-  <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git<span class="built_in"> config </span>--global user.name <span class="string">"yourgithubname"</span></span><br><span class="line">git<span class="built_in"> config </span>--global user.email <span class="string">"yourgithubemail"</span></span><br></pre></td></tr></table></figure></li>
-<li><p>设置ssh key</p>
-  <figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">"youremail"</span></span><br><span class="line"><span class="meta">#生成后填到github和coding上（有coding平台的话）</span></span><br><span class="line"><span class="meta">#验证是否成功</span></span><br><span class="line">ssh -T git<span class="symbol">@github</span>.com</span><br><span class="line">ssh -T git<span class="symbol">@git</span>.coding.net <span class="meta">#(有coding平台的话)</span></span><br></pre></td></tr></table></figure></li>
-<li><p>安装nodejs</p>
-  <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-<span class="builtin-name">get</span> install nodejs</span><br><span class="line">sudo apt-<span class="builtin-name">get</span> install npm</span><br></pre></td></tr></table></figure></li>
-<li><p>安装hexo</p>
-<p>  <code>sudo npm install hexo-cli -g</code></p>
-</li>
-</ul>
-<p>但是已经不需要初始化了，</p>
-<p>直接在任意文件夹下，</p>
-<p><code>git clone git@………………</code></p>
-<p>然后进入克隆到的文件夹：</p>
-<pre><code>cd xxx.github.io
-npm install
-npm install hexo-deployer-git --save</code></pre><p>生成，部署：</p>
-<pre><code>hexo g
-hexo d</code></pre><p>然后就可以开始写你的新博客了</p>
-<pre><code>hexo new newpage</code></pre><p>Tips:</p>
-<ol>
-<li><p>不要忘了，每次写完最好都把源文件上传一下</p>
- <figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">add</span> .</span><br><span class="line">git commit –m <span class="string">"描述xxxx"</span></span><br><span class="line">git <span class="keyword">push</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>如果是在已经编辑过的电脑上，已经有clone文件夹了，那么，每次只要和远端同步一下就行了</p>
- <figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">git pull</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-<ul>
-<li><p>master分支</p>
-<p>  修改_config.yml，再提交便可。</p>
-  <figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">deploy</span>:</span><br><span class="line">  <span class="attribute">type</span>: git</span><br><span class="line">  <span class="attribute">repo</span>: <span class="attribute">https</span>:<span class="comment">//github.com/username/username.github.io.git</span></span><br><span class="line">  <span class="attribute">branch</span>: master</span><br></pre></td></tr></table></figure>
-<h3 id="hexo分支"><a href="#hexo分支" class="headerlink" title="hexo分支"></a>hexo分支</h3></li>
-</ul>
-<p>简单的说就是把Hexo环境push到hexo分支：</p>
-<ol>
-<li>创建仓库，<a href="http://xxx.github.io；" target="_blank" rel="noopener">http://xxx.github.io；</a></li>
-<li>创建两个分支：master 与 hexo；</li>
-<li>设置hexo为默认分支（因为我们只需要手动管理这个分支上的Hexo网站文件）；</li>
-<li>使用git clone <a href="mailto:git@github.com">git@github.com</a>:xxx/xxx.github.io.git拷贝仓库；</li>
-<li>在本地文件夹下通过Git bash依次执行npm install hexo、hexo init、npm install 和 npm install hexo-deployer-git（此时当前分支应显示为hexo）</li>
-<li>修改_config.yml中的deploy参数，分支应为master；</li>
-<li>依次执行git add .、git commit -m “…”、git push origin hexo提交网站相关的文件；</li>
-<li>执行hexo g -d生成网站并部署到GitHub上。</li>
-</ol>
-<p><strong><em>以上前四步的目的是，在github上建立一个新的repo，并且把目录同步到本地。<br>执行第五步的时候，Hexo会生成一个新的.git，并且覆盖了上文提到的.git…这会导致没法push到hexo分支…正确的做法是，在hexo init前复制.git在完成hexo init后再黏贴回来覆盖新生成的.git</em></strong></p>
-<p><strong><em>注意：需要使用git push把源文件推到分支上</em></strong></p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>git add .</span><br><span class="line"><span class="variable">$ </span>git commit -m <span class="string">"xxxx"</span></span><br><span class="line"><span class="variable">$ </span>git push origin hexo</span><br></pre></td></tr></table></figure>
-
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/16/%E8%AE%A9Hexo%E5%83%8Fgit%E4%B8%80%E6%A0%B7%E5%8D%8F%E4%BD%9C%E5%86%99%E5%8D%9A%E5%AE%A2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -381,7 +310,7 @@ hexo d</code></pre><p>然后就可以开始写你的新博客了</p>
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-16 11:44:34" itemprop="dateModified" datetime="2020-07-16T11:44:34+08:00">2020-07-16</time>
+                <time title="修改时间：2020-07-16 16:22:46" itemprop="dateModified" datetime="2020-07-16T16:22:46+08:00">2020-07-16</time>
               </span>--->
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -422,11 +351,7 @@ hexo d</code></pre><p>然后就可以开始写你的新博客了</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="为什么要使用to-sql方法"><a href="#为什么要使用to-sql方法" class="headerlink" title="为什么要使用to_sql方法"></a>为什么要使用to_sql方法</h2><ul>
-<li><p>表结构如下：</p>
-  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`my_balance`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`balance`</span> <span class="built_in">decimal</span>(<span class="number">20</span>,<span class="number">4</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'余额'</span>,</span><br><span class="line">  <span class="string">`account`</span> <span class="built_in">varchar</span>(<span class="number">30</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'账户'</span>,</span><br><span class="line">  <span class="string">`charges`</span> <span class="built_in">decimal</span>(<span class="number">10</span>,<span class="number">4</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'交易手续费/每笔'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">5</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8 <span class="keyword">COMMENT</span>=<span class="string">'账户表'</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>现在要向my_balance表中插入一下数据，下面我们来看三段代码：</p>
+          <h2 id="为什么要使用to-sql方法"><a href="#为什么要使用to-sql方法" class="headerlink" title="为什么要使用to_sql方法"></a>为什么要使用to_sql方法</h2>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/07/15/pandas%E7%9A%84to_sql%E5%A1%AB%E5%9D%91/#more" rel="contents">
@@ -489,7 +414,7 @@ hexo d</code></pre><p>然后就可以开始写你的新博客了</p>
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-16 11:44:34" itemprop="dateModified" datetime="2020-07-16T11:44:34+08:00">2020-07-16</time>
+                <time title="修改时间：2020-07-16 16:23:05" itemprop="dateModified" datetime="2020-07-16T16:23:05+08:00">2020-07-16</time>
               </span>--->
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -530,7 +455,7 @@ hexo d</code></pre><p>然后就可以开始写你的新博客了</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><h3 id="1-卸载已安装的Node和npm-！！！"><a href="#1-卸载已安装的Node和npm-！！！" class="headerlink" title="1. 卸载已安装的Node和npm ！！！"></a>1. 卸载已安装的Node和npm ！！！</h3><pre><code><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt remove npm  //卸载npm</span><br><span class="line">sudo apt remove <span class="keyword">node</span> <span class="title">//卸载node</span></span><br><span class="line"></span><br><span class="line">cd /usr/local/bin   //进入该目录中，若有<span class="keyword">node</span><span class="title">或者npm</span>文件，将他删除删除</span><br></pre></td></tr></table></figure></code></pre><h3 id="2-下载安装node-js"><a href="#2-下载安装node-js" class="headerlink" title="2. 下载安装node.js"></a>2. 下载安装node.js</h3><p>去<a href="https://nodejs.org/en/download/current/" target="_blank" rel="noopener">node.js官网</a>下载最新版或者最稳定版的node.js Linux安装包<br><img src="1.png" alt="imagl"></p>
+          <h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><h3 id="1-卸载已安装的Node和npm-！！！"><a href="#1-卸载已安装的Node和npm-！！！" class="headerlink" title="1. 卸载已安装的Node和npm ！！！"></a>1. 卸载已安装的Node和npm ！！！</h3><pre><code><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt remove npm  //卸载npm</span><br><span class="line">sudo apt remove <span class="keyword">node</span> <span class="title">//卸载node</span></span><br><span class="line"></span><br><span class="line">cd /usr/local/bin   //进入该目录中，若有<span class="keyword">node</span><span class="title">或者npm</span>文件，将他删除删除</span><br></pre></td></tr></table></figure></code></pre>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/07/15/Ubuntu%E5%AE%89%E8%A3%85%E6%9C%80%E6%96%B0%E7%89%88%E7%9A%84Node.js%E5%92%8Cnpm/#more" rel="contents">
@@ -593,7 +518,7 @@ hexo d</code></pre><p>然后就可以开始写你的新博客了</p>
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-16 11:44:34" itemprop="dateModified" datetime="2020-07-16T11:44:34+08:00">2020-07-16</time>
+                <time title="修改时间：2020-07-16 16:23:33" itemprop="dateModified" datetime="2020-07-16T16:23:33+08:00">2020-07-16</time>
               </span>--->
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -637,14 +562,14 @@ hexo d</code></pre><p>然后就可以开始写你的新博客了</p>
           <h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><ol>
 <li><p>要为Markdown支持配置Sphinx项目，请按照以下步骤进行：</p>
 <p> <code>pip install --upgrade recommonmark</code><br> 注<br> 这里解释的配置需要重新注册版本0.5.0或更高版本。</p>
-</li>
-<li><p>config文件中：</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">extensions = [<span class="string">'recommonmark'</span>]</span><br></pre></td></tr></table></figure></li>
-<li><p>如果您想使用扩展名以外的Markdown文件.md，调整source_suffix变量。下面的示例将Sphinx配置为解析所有扩展名为.md和.txt作为标记：</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">source_suffix = &#123;</span><br><span class="line">    <span class="string">'.rst'</span>: <span class="string">'restructuredtext'</span>,</span><br><span class="line">    <span class="string">'.txt'</span>: <span class="string">'markdown'</span>,</span><br><span class="line">    <span class="string">'.md'</span>: <span class="string">'markdown'</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ol>
-<p><em>参考：<a href="https://www.sphinx-doc.org/en/master/usage/markdown.html" target="_blank" rel="noopener">https://www.sphinx-doc.org/en/master/usage/markdown.html</a></em></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/15/sphinx%E6%94%AF%E6%8C%81markdown/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
