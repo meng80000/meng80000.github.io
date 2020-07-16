@@ -1,6 +1,8 @@
 # Header
 menu:
   Home: /
+  tags: /tags
+  archives: /archives
   Archives: /archives
 rss: /atom.xml
 
