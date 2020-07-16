@@ -202,7 +202,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-07-16 15:22:09 / 修改时间：16:09:27" itemprop="dateCreated datePublished" datetime="2020-07-16T15:22:09+08:00">2020-07-16</time>
+              <time title="创建时间：2020-07-16 15:22:09 / 修改时间：16:21:38" itemprop="dateCreated datePublished" datetime="2020-07-16T15:22:09+08:00">2020-07-16</time>
             </span>
 
           <!----->
@@ -245,21 +245,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><img src="%E8%AE%A9Hexo%E5%83%8Fgit%E4%B8%80%E6%A0%B7%E5%8D%8F%E4%BD%9C%E5%86%99%E5%8D%9A%E5%AE%A2%5C1.png" alt="1"></p>
+          <p><img src="1.png" alt="1"></p>
 <p>完成Hexo本地运行后，会在本地文件里生成一个public文件夹。public文件夹内是根据.md生成的html文件，也就博客的静态文件。<br>通常情况下，我们执行：</p>
 <p><code>$ hexo d</code></p>
 <p>就是把public文件夹下的文件同步到github，然后就能通过 <a href="https://username.github.io/" target="_blank" rel="noopener">https://username.github.io/</a> 访问博客了。所以，我们的思路其实就是把静态文件和Hexo环境，分别存在username.github.io的master和hexo分支上。</p>
 <p>由于<code>hexo d</code>上传部署到github的其实是hexo编译后的文件，是用来生成网页的，不包含源文件。</p>
-<p><img src="%E8%AE%A9Hexo%E5%83%8Fgit%E4%B8%80%E6%A0%B7%E5%8D%8F%E4%BD%9C%E5%86%99%E5%8D%9A%E5%AE%A2%5C2.png" alt="3"></p>
+<p><img src="2.png" alt="3"></p>
 <p>也就是上传的是在本地目录里自动生成的<code>.deploy_git</code>里面。</p>
 <p>其他文件 ，包括我们写在source 里面的，和配置文件，主题文件，都没有上传到github</p>
-<p><img src="%E8%AE%A9Hexo%E5%83%8Fgit%E4%B8%80%E6%A0%B7%E5%8D%8F%E4%BD%9C%E5%86%99%E5%8D%9A%E5%AE%A2%5C3.png" alt="3"></p>
+<p><img src="3.png" alt="3"></p>
 <p>所以可以利用git的分支管理，将源文件上传到github的另一个分支即可。</p>
 <p>###上传分支</p>
 <p>首先，先在github上新建一个hexo分支，如图：</p>
-<p><img src="%E8%AE%A9Hexo%E5%83%8Fgit%E4%B8%80%E6%A0%B7%E5%8D%8F%E4%BD%9C%E5%86%99%E5%8D%9A%E5%AE%A2%5C4.png" alt="4"></p>
+<p><img src="4.png" alt="4"></p>
 <p>然后在这个仓库的settings中，选择默认分支为hexo分支（这样每次同步的时候就不用指定分支，比较方便）。</p>
-<p><img src="%E8%AE%A9Hexo%E5%83%8Fgit%E4%B8%80%E6%A0%B7%E5%8D%8F%E4%BD%9C%E5%86%99%E5%8D%9A%E5%AE%A2%5C5.png" alt="5"></p>
+<p><img src="5.png" alt="5"></p>
 <p>然后在本地的任意目录下，打开git bash，</p>
 <p><code>git clone git@github.com:ZJUFangzh/ZJUFangzh.github.io.git</code></p>
 <p>将其克隆到本地，因为默认分支已经设成了hexo，所以clone时只clone了hexo。</p>
@@ -271,7 +271,7 @@
 <p>而后</p>
 <figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">add</span> .</span><br><span class="line">git commit –m <span class="string">"add branch"</span></span><br><span class="line">git <span class="keyword">push</span></span><br></pre></td></tr></table></figure>
 <p>这样就上传完了，可以去你的github上看一看hexo分支有没有上传上去，其中<code>node_modules</code>、<code>public</code>、<code>db.json</code>已经被忽略掉了，没有关系，不需要上传的，因为在别的电脑上需要重新输入命令安装 。</p>
-<p><img src="%E8%AE%A9Hexo%E5%83%8Fgit%E4%B8%80%E6%A0%B7%E5%8D%8F%E4%BD%9C%E5%86%99%E5%8D%9A%E5%AE%A2%5C5.png" alt="5"></p>
+<p><img src="5.png" alt="5"></p>
 <p>这样就上传完了。</p>
 <h3 id="更换电脑操作"><a href="#更换电脑操作" class="headerlink" title="更换电脑操作"></a>更换电脑操作</h3><p>一样的，跟之前的环境搭建一样，</p>
 <ul>
