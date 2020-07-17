@@ -56,7 +56,7 @@
 <meta property="og:description" content="Hexo 默认是没有 categories 和 tags 的需要">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-17T01:48:22.000Z">
-<meta property="article:modified_time" content="2020-07-17T02:24:23.815Z">
+<meta property="article:modified_time" content="2020-07-17T02:55:50.869Z">
 <meta property="article:author" content="路人甲">
 <meta property="article:tag" content="博客">
 <meta name="twitter:card" content="summary">
@@ -206,7 +206,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-07-17 09:48:22 / 修改时间：10:24:23" itemprop="dateCreated datePublished" datetime="2020-07-17T09:48:22+08:00">2020-07-17</time>
+              <time title="创建时间：2020-07-17 09:48:22 / 修改时间：10:55:50" itemprop="dateCreated datePublished" datetime="2020-07-17T09:48:22+08:00">2020-07-17</time>
             </span>
 
           <!----->
@@ -249,7 +249,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>452</span>
+              <span>443</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -270,15 +270,14 @@
       
         <p><strong>Hexo 默认是没有 categories 和 tags 的需要</strong></p>
 <a id="more"></a>
-<p>###一、 需要新建tags和categories页面</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new<span class="built_in"> page </span><span class="string">"tags"</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="一、-需要新建tags和categories页面"><a href="#一、-需要新建tags和categories页面" class="headerlink" title="一、 需要新建tags和categories页面"></a>一、 需要新建tags和categories页面</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new<span class="built_in"> page </span><span class="string">"tags"</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new<span class="built_in"> page </span><span class="string">"categories"</span></span><br></pre></td></tr></table></figure>
 
-<p>###二、编辑 /tags/index.md /categories/index.md</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">tags</span></span><br><span class="line"><span class="attr">date:</span> <span class="number">2020</span><span class="number">-01</span><span class="number">-10</span> <span class="number">16</span><span class="string">:14:33</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">"tags"</span></span><br><span class="line"><span class="attr">layout:</span> <span class="string">"tags"</span>   <span class="comment">#增加tags的布局</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
+<h3 id="二、编辑-tags-index-md-categories-index-md"><a href="#二、编辑-tags-index-md-categories-index-md" class="headerlink" title="二、编辑 /tags/index.md /categories/index.md"></a>二、编辑 /tags/index.md /categories/index.md</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">tags</span></span><br><span class="line"><span class="attr">date:</span> <span class="number">2020</span><span class="number">-01</span><span class="number">-10</span> <span class="number">16</span><span class="string">:14:33</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">"tags"</span></span><br><span class="line"><span class="attr">layout:</span> <span class="string">"tags"</span>   <span class="comment">#增加tags的布局</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">categories</span></span><br><span class="line"><span class="attr">date:</span> <span class="number">2020</span><span class="number">-01</span><span class="number">-10</span> <span class="number">16</span><span class="string">:15:43</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">"categories"</span></span><br><span class="line"><span class="attr">layout:</span> <span class="string">"categories"</span>    <span class="comment">#增加categories的布局</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
 
-<p>###三、给自己的帖子新加配置,增加tags和categories<br>例如我自己的一篇博客</p>
+<h3 id="三、给自己的帖子新加配置-增加tags和categories"><a href="#三、给自己的帖子新加配置-增加tags和categories" class="headerlink" title="三、给自己的帖子新加配置,增加tags和categories"></a>三、给自己的帖子新加配置,增加tags和categories</h3><p>例如我自己的一篇博客</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">hexo</span> <span class="string">categories和tags页面不显示解决办法</span></span><br><span class="line"><span class="attr">date:</span> <span class="number">2020</span><span class="number">-01</span><span class="number">-12</span> <span class="number">17</span><span class="string">:22:40</span></span><br><span class="line"><span class="attr">tags:</span> <span class="string">博客</span></span><br><span class="line"><span class="attr">categories:</span> <span class="string">Hexo</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
 
 
@@ -377,6 +376,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、-需要新建tags和categories页面"><span class="nav-text">一、 需要新建tags和categories页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、编辑-tags-index-md-categories-index-md"><span class="nav-text">二、编辑 &#x2F;tags&#x2F;index.md &#x2F;categories&#x2F;index.md</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、给自己的帖子新加配置-增加tags和categories"><span class="nav-text">三、给自己的帖子新加配置,增加tags和categories</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
