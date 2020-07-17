@@ -8,7 +8,8 @@ categories: hexo
 **Hexo 默认是没有 categories 和 tags 的需要**
 
 <!-- more -->
-###一、 需要新建tags和categories页面
+
+### 一、 需要新建tags和categories页面
 ```
 hexo new page "tags" 
 ```
@@ -16,7 +17,7 @@ hexo new page "tags"
 hexo new page "categories"
 ```
 
-###二、编辑 /tags/index.md /categories/index.md
+### 二、编辑 /tags/index.md /categories/index.md
 ```
 ---
 title: tags
@@ -34,7 +35,7 @@ layout: "categories"    #增加categories的布局
 ---
 ```
 
-###三、给自己的帖子新加配置,增加tags和categories
+### 三、给自己的帖子新加配置,增加tags和categories
 例如我自己的一篇博客
 ```
 ---
