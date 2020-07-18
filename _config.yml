@@ -101,6 +101,9 @@ ignore:
 theme: next
 #theme: landscape
 
+aplayer:
+  meting: true
+
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:

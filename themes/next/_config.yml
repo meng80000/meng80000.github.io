@@ -125,6 +125,7 @@ menu:
   tags: /tags/ || tags
   categories: /categories/ || th
   archives: /archives/ || archive
+  playlist: /playlist/ || music
   # 碎碎念: /xiabibi/ || 碎碎念
   #schedule: /schedule/ || calendar
   #sitemap: /sitemap.xml || sitemap

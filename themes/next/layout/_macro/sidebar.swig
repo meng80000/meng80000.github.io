@@ -44,7 +44,7 @@
         </div>
       {%- endif %}
 	<div id="music163player">
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=50 src="https://music.163.com/song/media/outer/url?id=318494.mp3"></iframe>
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=50 src=""></iframe>
 	</div>
     </div>
   </aside>
