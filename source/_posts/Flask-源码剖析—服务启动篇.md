@@ -12,8 +12,6 @@ categories: 框架
 from flask import Flask
 app = Flask(__name__)
 
-<!-- more -->
-
 @app.route("/")
 def hello():
     return "Hello World!"
@@ -21,6 +19,7 @@ def hello():
 if __name__ == "__main__":
     app.run()
 ```
+<!-- more -->
 输入以下命令启动应用程序：
 ```
 $ python hello.py
