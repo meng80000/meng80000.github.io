@@ -83,7 +83,7 @@ mysql> show master status;
 
 **注意：记录好File和Position，后面要用**
 
-**（以下为从数据库）**
+***（以下为从数据库）***
 
 6. **配置从数据库：**
 1）从服务器，同理，要分配一个唯一的Server ID，需要关闭MySQL，修改好my.cnf后再重启，如下：
