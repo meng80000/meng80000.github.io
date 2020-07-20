@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/url_head.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/url_head.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/url_head.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-center-atom.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="【Flask官方文档经典示例】 hello.py123456789from flask import Flaskapp &#x3D; Flask(__name__)@app.route(&quot;&#x2F;&quot;)def hello():    return &quot;Hello World!&quot;if __name__ &#x3D;&#x3D; &quot;__main__&quot;:    app.run()">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flask 源码剖析—服务启动篇">
+<meta property="og:url" content="http://yoursite.com/2020/07/18/Flask-%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%E2%80%94%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8%E7%AF%87/index.html">
+<meta property="og:site_name" content="路人甲">
+<meta property="og:description" content="【Flask官方文档经典示例】 hello.py123456789from flask import Flaskapp &#x3D; Flask(__name__)@app.route(&quot;&#x2F;&quot;)def hello():    return &quot;Hello World!&quot;if __name__ &#x3D;&#x3D; &quot;__main__&quot;:    app.run()">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/07/18/Flask-%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%E2%80%94%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8%E7%AF%87/1.png">
+<meta property="article:published_time" content="2020-07-18T15:23:17.000Z">
+<meta property="article:modified_time" content="2020-07-20T09:03:01.267Z">
+<meta property="article:author" content="路人甲">
+<meta property="article:tag" content="Flask">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/07/18/Flask-%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%E2%80%94%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8%E7%AF%87/1.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/07/18/Flask-%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%E2%80%94%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8%E7%AF%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Flask 源码剖析—服务启动篇 | 路人甲</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">路人甲</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-playlist">
+
+    <a href="/playlist/" rel="section"><i class="fa fa-fw fa-music"></i>歌单</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/18/Flask-%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%E2%80%94%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="路人甲">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="路人甲">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flask 源码剖析—服务启动篇
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-18 23:23:17" itemprop="dateCreated datePublished" datetime="2020-07-18T23:23:17+08:00">2020-07-18</time>
+            </span>
+
+          <!--
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-20 17:03:01" itemprop="dateModified" datetime="2020-07-20T17:03:01+08:00">2020-07-20</time>
+              </span>--->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index">
+                    <span itemprop="name">框架</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/07/18/Flask-%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%E2%80%94%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8%E7%AF%87/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/18/Flask-%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%E2%80%94%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8%E7%AF%87/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="【Flask官方文档经典示例】-hello-py"><a href="#【Flask官方文档经典示例】-hello-py" class="headerlink" title="【Flask官方文档经典示例】 hello.py"></a>【Flask官方文档经典示例】 hello.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route("/")</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Hello World!"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>输入以下命令启动应用程序：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">python</span> hello.<span class="keyword">py</span></span><br><span class="line"> * Running <span class="keyword">on</span> http://<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5000</span>/ (Press CTRL+C <span class="keyword">to</span> <span class="keyword">quit</span>)</span><br></pre></td></tr></table></figure>
+<p>打开你的浏览器并在地址栏输入<a href="http://127.0.0.1:5000/" target="_blank" rel="noopener">http://127.0.0.1:5000/</a> 。【图1】显示连接到应用程序后的浏览器。</p>
+<p><img src="/2020/07/18/Flask-%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%E2%80%94%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8%E7%AF%87/1.png" alt="1"></p>
+<p>图1 <em>hello.py Flask应用程序</em></p>
+<h3 id="服务是怎么启动的"><a href="#服务是怎么启动的" class="headerlink" title="服务是怎么启动的"></a>服务是怎么启动的</h3><p>从<code>app.run()</code>开始，这行代码表示启动一个服务。我们看到<code>app</code>是<code>Flask</code>一个对象，而<code>run()</code>是该对象的一个方法。我们先简单的认为定义了一个类，然后实例化这个类并调用该类的一个方法，如下：</p>
+<p>【示例1-1】example-1-1.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Flask</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">app = Flask()</span><br><span class="line">app.run()</span><br></pre></td></tr></table></figure>
+<p>如果我们运行【示例1-1】这段代码，会发现什么都没有发生。然而，【Flask官方文档经典示例】不是这样的，当你运行后它是下面这样的：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">python</span> hello.<span class="keyword">py</span></span><br><span class="line"> * Running <span class="keyword">on</span> http://<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5000</span>/ (Press CTRL+C <span class="keyword">to</span> <span class="keyword">quit</span>)</span><br></pre></td></tr></table></figure>
+<p>很自然的可以想到，【Flask官方文档经典示例】中的<code>app.run()</code>不简单，我们可以看看<code>run()</code>方法定义，如下：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def <span class="builtin-name">run</span>(self, <span class="attribute">host</span>=None, <span class="attribute">port</span>=None, <span class="attribute">debug</span>=None, **options):</span><br><span class="line">    <span class="keyword">from</span> werkzeug.serving import run_simple</span><br><span class="line">    <span class="built_in">..</span>.</span><br><span class="line">    try:</span><br><span class="line">        run_simple(host, port, self, **options)</span><br><span class="line">    finally:</span><br><span class="line">        self._got_first_request = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<p>在这个方法中，我们先忽略一些配置操作，重点关注<code>run_simple()</code>函数，发现该函数是从<code>werkzeug.serving</code>模块中导入的。</p>
+<p>到了这里我们就不得不提一下<code>Werkzeug</code>了，官方文档定义：<code>Werkzeug</code>是为Python设计的<code>HTTP</code>和<code>WSGI</code>实用程序库。至于它有什么作用，我们在这里暂且不讨论，先跟到代码里面看看它都做了什么。</p>
+<p>我们看到这个<code>run_simple()</code>函数里面还嵌套了一个inner()函数，里面有几行关键代码，如下：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">srv = make_server(hostname, port, application, threaded, </span><br><span class="line">                  processes, request_handler, </span><br><span class="line">                  passthrough_errors, ssl_context, </span><br><span class="line">                  <span class="attribute">fd</span>=fd)</span><br><span class="line"><span class="built_in">..</span>.</span><br><span class="line">srv.serve_forever()</span><br></pre></td></tr></table></figure>
+<p>从上面的代码，我们看到在<code>inner()</code>函数里面调用了<code>make_server()</code>函数来创建一个类实例，该实例会调用<code>serve_forever()</code>方法让服务一直运行，等待客户端的请求。到这里我们大概找到了服务启动的入口了，想知道具体是怎么启动，我们还需要深入挖掘一下。</p>
+<p>因为调用<code>run_simple()</code>函数时参数<code>threaded</code>和<code>processes</code>给的都是默认值，分别为<code>False</code>和<code>1</code>，所以在这里<code>make_server()</code>函数其实是创建了一个<code>BaseWSGIServer</code>类实例，并调用该实例的<code>serve_forever()</code>方法，具体<code>make_server()</code>函数如下：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">def make_server(<span class="attribute">host</span>=None, <span class="attribute">port</span>=None, <span class="attribute">app</span>=None, <span class="attribute">threaded</span>=<span class="literal">False</span>, <span class="attribute">processes</span>=1,</span><br><span class="line">                <span class="attribute">request_handler</span>=None, <span class="attribute">passthrough_errors</span>=<span class="literal">False</span>,</span><br><span class="line">                <span class="attribute">ssl_context</span>=None, <span class="attribute">fd</span>=None):</span><br><span class="line">    <span class="keyword">if</span> threaded <span class="keyword">and</span> processes &gt; 1:</span><br><span class="line">        raise ValueError(<span class="string">"cannot have a multithreaded and "</span></span><br><span class="line">                         <span class="string">"multi process server."</span>)</span><br><span class="line">    elif threaded:</span><br><span class="line">        return ThreadedWSGIServer(host, port, app, request_handler,</span><br><span class="line">                                  passthrough_errors, ssl_context, <span class="attribute">fd</span>=fd)</span><br><span class="line">    elif processes &gt; 1:</span><br><span class="line">        return ForkingWSGIServer(host, port, app, processes, request_handler, </span><br><span class="line">                                 passthrough_errors, ssl_context, <span class="attribute">fd</span>=fd)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        return BaseWSGIServer(host, port, app, request_handler, </span><br><span class="line">                              passthrough_errors, ssl_context, <span class="attribute">fd</span>=fd)</span><br></pre></td></tr></table></figure>
+<p>找到<code>BaseWSGIServer</code>类，如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseWSGIServer</span><span class="params">(HTTPServer, object)</span>:</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">serve_forever</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.shutdown_signal = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            HTTPServer.serve_forever(self)</span><br><span class="line">        <span class="keyword">except</span> KeyboardInterrupt:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        <span class="keyword">finally</span>:</span><br><span class="line">            self.server_close()</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>【注意】接下来的代码嵌套调用比较多，所以最好是能对照着源码来看。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#96;&#96;&#96;</span><br><span class="line">class HTTPServer(SocketServer.TCPServer):</span><br><span class="line">    allow_reuse_address &#x3D; 1</span><br><span class="line">    def server_bind(self):</span><br><span class="line">        SocketServer.TCPServer.server_bind(self)</span><br><span class="line">        host, port &#x3D; self.socket.getsockname()[:2]</span><br><span class="line">        self.server_name &#x3D; socket.getfqdn(host)</span><br><span class="line">        self.server_port &#x3D; port</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><figcaption><span>SocketServer.TCPServer```，我们再找到```TCPServer```类，然而它也没有```serve_forever()```方法，且这个类继承了```BaseServer```类，所以再去```BaseServer```里面看看，如下代码：</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#96;&#96;&#96;</span><br><span class="line">def serve_forever(self, poll_interval&#x3D;0.5):</span><br><span class="line">    self.__is_shut_down.clear()</span><br><span class="line">    try:</span><br><span class="line">        while not self.__shutdown_request:</span><br><span class="line">            r, w, e &#x3D; _eintr_retry(select.select, [self], [], [], poll_interval)</span><br><span class="line">            if self in r:</span><br><span class="line">                self._handle_request_noblock()</span><br><span class="line">    finally:</span><br><span class="line">        self.__shutdown_request &#x3D; False</span><br><span class="line">        self.__is_shut_down.set()</span><br></pre></td></tr></table></figure>
+<p>所以前面看到的<code>srv.serve_forever()</code>其实是调用了<code>BaseServer</code>里面的<code>serve_forever()</code>方法，它接受一个参数<code>poll_interval</code>，用于表示<code>select</code>轮询的时间。然后进入一个无限循环，调用<code>select</code>方式进行网络IO监听。也就是说<code>app.run()</code>启动的是一个<code>BaseWSGIServer</code>，该服务通过一层一层的继承创建socket来进行网络监听，等待客户端连接。</p>
+<p>至此，Flask服务是怎么启动的应该有个基本的了解了。</p>
+<p>整理一下相关server类的继承关系，如下：<br><code>BaseWSGIServer--&gt;HTTPServer--&gt;SocketServer.TCPServer--&gt;BaseServer</code><br>从上面的类继承关系，我们可以很容易的理解，因为<code>Flask</code>是一个Web框架，所以需要一个<code>HTTP服务</code>，而<code>HTTP服务是基于TCP服务</code>的，而<code>TCP服务最终会有一个基础服务来处理socket</code>。这一条线都能够解释的通。但是，那个<code>BaseWSGIServer</code>是个什么鬼？为什么会需要一层这个服务？这也是我想要去研究的，所以我会在下一篇里面进行讲解。</p>
+<ul>
+<li><a href="https://segmentfault.com/a/1190000005788124" target="_blank" rel="noopener">Flask 源码剖析——服务启动篇</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              
+			  <a href="/tags/Flask/" rel="tag"><i class="fa fa-tag" aria-hidden="true"></i> Flask</a>
+              
+			  <a href="/tags/web/" rel="tag"><i class="fa fa-tag" aria-hidden="true"></i> web</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/17/Hexo-%E6%9C%80%E5%B8%B8%E7%94%A8%E7%9A%84%E5%87%A0%E4%B8%AA%E5%91%BD%E4%BB%A4/" rel="prev" title="Hexo 最常用的几个命令">
+      <i class="fa fa-chevron-left"></i> Hexo 最常用的几个命令
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/18/mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E3%80%81%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB%E6%9C%8D%E5%8A%A1-centos/" rel="next" title="mysql主从复制、读写分离服务(centos)">
+      mysql主从复制、读写分离服务(centos) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+	<div>
+		
+		<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------ 本文结束 ------</div>
+    
+</div>
+		
+	 </div>
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#【Flask官方文档经典示例】-hello-py"><span class="nav-text">【Flask官方文档经典示例】 hello.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务是怎么启动的"><span class="nav-text">服务是怎么启动的</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="路人甲"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">路人甲</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+	<div id="music163player">
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=50 src=""></iframe>
+	</div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">路人甲</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">42k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">38 分钟</span>
+</div>
+
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: '3JciErqPFIaE9B4uTjI4jIRf-gzGzoHsz',
+      appKey: 'gUs7bIavEOCMTDuKiwqjkC2U',
+      placeholder: "有什么想说的吗",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

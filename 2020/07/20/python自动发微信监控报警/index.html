@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/url_head.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/url_head.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/url_head.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-center-atom.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="我们每个人每天都是在用微信，在程序开发过程中，我们会需要监控我们的程序，发短信监控收费，发邮件懒得看，发微信是最好的方式，而且是免费的。发现个非常好用的python库：wxpy。wxpy基于itchat，使用了 Web 微信的通讯协议，实现了微信登录、收发消息、搜索好友、数据统计等功能。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python自动发微信监控报警">
+<meta property="og:url" content="http://yoursite.com/2020/07/20/python%E8%87%AA%E5%8A%A8%E5%8F%91%E5%BE%AE%E4%BF%A1%E7%9B%91%E6%8E%A7%E6%8A%A5%E8%AD%A6/index.html">
+<meta property="og:site_name" content="路人甲">
+<meta property="og:description" content="我们每个人每天都是在用微信，在程序开发过程中，我们会需要监控我们的程序，发短信监控收费，发邮件懒得看，发微信是最好的方式，而且是免费的。发现个非常好用的python库：wxpy。wxpy基于itchat，使用了 Web 微信的通讯协议，实现了微信登录、收发消息、搜索好友、数据统计等功能。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/07/20/python%E8%87%AA%E5%8A%A8%E5%8F%91%E5%BE%AE%E4%BF%A1%E7%9B%91%E6%8E%A7%E6%8A%A5%E8%AD%A6/1.png">
+<meta property="article:published_time" content="2020-07-20T09:40:14.000Z">
+<meta property="article:modified_time" content="2020-07-20T09:46:10.122Z">
+<meta property="article:author" content="路人甲">
+<meta property="article:tag" content="邮件">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/07/20/python%E8%87%AA%E5%8A%A8%E5%8F%91%E5%BE%AE%E4%BF%A1%E7%9B%91%E6%8E%A7%E6%8A%A5%E8%AD%A6/1.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/07/20/python%E8%87%AA%E5%8A%A8%E5%8F%91%E5%BE%AE%E4%BF%A1%E7%9B%91%E6%8E%A7%E6%8A%A5%E8%AD%A6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>python自动发微信监控报警 | 路人甲</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">路人甲</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-playlist">
+
+    <a href="/playlist/" rel="section"><i class="fa fa-fw fa-music"></i>歌单</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/20/python%E8%87%AA%E5%8A%A8%E5%8F%91%E5%BE%AE%E4%BF%A1%E7%9B%91%E6%8E%A7%E6%8A%A5%E8%AD%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="路人甲">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="路人甲">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python自动发微信监控报警
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-07-20 17:40:14 / 修改时间：17:46:10" itemprop="dateCreated datePublished" datetime="2020-07-20T17:40:14+08:00">2020-07-20</time>
+            </span>
+
+          <!----->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/07/20/python%E8%87%AA%E5%8A%A8%E5%8F%91%E5%BE%AE%E4%BF%A1%E7%9B%91%E6%8E%A7%E6%8A%A5%E8%AD%A6/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/20/python%E8%87%AA%E5%8A%A8%E5%8F%91%E5%BE%AE%E4%BF%A1%E7%9B%91%E6%8E%A7%E6%8A%A5%E8%AD%A6/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>我们每个人每天都是在用微信，在程序开发过程中，我们会需要监控我们的程序，发短信监控收费，发邮件懒得看，发微信是最好的方式，而且是免费的。发现个非常好用的python库：wxpy。wxpy基于itchat，使用了 Web 微信的通讯协议，实现了微信登录、收发消息、搜索好友、数据统计等功能。</p>
+<a id="more"></a>
+<p>官方文档：<a href="https://wxpy.readthedocs.io/zh/latest/chats.html" target="_blank" rel="noopener">chats.html</a></p>
+<p>安装wxpy包：<code>pip install wxpy</code></p>
+<h6 id="一开始扫码登录，程序会保存一个-pkl文件，这个文件是程序自动保存的，下次就不需要扫码了。"><a href="#一开始扫码登录，程序会保存一个-pkl文件，这个文件是程序自动保存的，下次就不需要扫码了。" class="headerlink" title="一开始扫码登录，程序会保存一个.pkl文件，这个文件是程序自动保存的，下次就不需要扫码了。"></a>一开始扫码登录，程序会保存一个.pkl文件，这个文件是程序自动保存的，下次就不需要扫码了。</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- encoding=utf-8 -*-</span></span><br><span class="line"><span class="string">""" 微信报警功能"""</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">from</span> wxpy <span class="keyword">import</span> *</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 发给多个好友</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wxSendMsgToFriends</span><span class="params">(name_list,content)</span>:</span></span><br><span class="line"> <span class="string">"""</span></span><br><span class="line"><span class="string"> :param name_list: 名字列表</span></span><br><span class="line"><span class="string"> :param content:内容</span></span><br><span class="line"><span class="string"> :return:</span></span><br><span class="line"><span class="string"> """</span></span><br><span class="line"> <span class="comment"># 缓存实现自动登录</span></span><br><span class="line"> bot = Bot(cache_path=<span class="literal">True</span>)</span><br><span class="line"> <span class="keyword">try</span>:</span><br><span class="line"> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(name_list)):</span><br><span class="line">  my_friend = bot.friends().search(name_list[i])[<span class="number">0</span>]</span><br><span class="line">  my_friend.send(content)</span><br><span class="line"> </span><br><span class="line"> <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line"> print(<span class="string">"&#123;0&#125;"</span>.format(str(e)))</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 发给机器人自己，在文件传输助手收到消息</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wxSendMsgToSelf</span><span class="params">(content)</span>:</span></span><br><span class="line"> <span class="string">"""</span></span><br><span class="line"><span class="string"> :param content: 内容</span></span><br><span class="line"><span class="string"> :return:</span></span><br><span class="line"><span class="string"> """</span></span><br><span class="line"> <span class="comment"># 缓存实现自动登录</span></span><br><span class="line"> bot = Bot(cache_path=<span class="literal">True</span>)</span><br><span class="line"> </span><br><span class="line"> <span class="comment"># 向文件传输助手发送消息</span></span><br><span class="line"> bot.file_helper.send(content)</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line"> </span><br><span class="line"> <span class="comment"># 名字列表</span></span><br><span class="line"> name_list=[<span class="string">'张三'</span>,<span class="string">'李四'</span>]</span><br><span class="line"> <span class="comment"># 发送内容</span></span><br><span class="line"> content=<span class="string">"微信报警功能测试"</span></span><br><span class="line"> wxSendMsgToFriends(name_list,content)</span><br></pre></td></tr></table></figure>
+<h6 id="wxpy-不仅可以发文本内容，也可以发图片，文件，视频等。感觉很方便，感兴趣的朋友可以去尝试。"><a href="#wxpy-不仅可以发文本内容，也可以发图片，文件，视频等。感觉很方便，感兴趣的朋友可以去尝试。" class="headerlink" title="wxpy 不仅可以发文本内容，也可以发图片，文件，视频等。感觉很方便，感兴趣的朋友可以去尝试。"></a>wxpy 不仅可以发文本内容，也可以发图片，文件，视频等。感觉很方便，感兴趣的朋友可以去尝试。</h6><p><img src="/2020/07/20/python%E8%87%AA%E5%8A%A8%E5%8F%91%E5%BE%AE%E4%BF%A1%E7%9B%91%E6%8E%A7%E6%8A%A5%E8%AD%A6/1.png" alt="1.png"></p>
+<h6 id="本文链接：https-blog-csdn-net-u013421629-article-details-85626600"><a href="#本文链接：https-blog-csdn-net-u013421629-article-details-85626600" class="headerlink" title="本文链接：https://blog.csdn.net/u013421629/article/details/85626600"></a>本文链接：<a href="https://blog.csdn.net/u013421629/article/details/85626600" target="_blank" rel="noopener">https://blog.csdn.net/u013421629/article/details/85626600</a></h6>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              
+			  <a href="/tags/%E9%82%AE%E4%BB%B6/" rel="tag"><i class="fa fa-tag" aria-hidden="true"></i> 邮件</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/18/mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E3%80%81%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB%E6%9C%8D%E5%8A%A1-centos/" rel="prev" title="mysql主从复制、读写分离服务(centos)">
+      <i class="fa fa-chevron-left"></i> mysql主从复制、读写分离服务(centos)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/20/python-collections-%E6%A8%A1%E5%9D%97%E4%B8%AD%E7%9A%84-deque/" rel="next" title="python collections 模块中的 deque">
+      python collections 模块中的 deque <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+	<div>
+		
+		<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------ 本文结束 ------</div>
+    
+</div>
+		
+	 </div>
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#一开始扫码登录，程序会保存一个-pkl文件，这个文件是程序自动保存的，下次就不需要扫码了。"><span class="nav-text">一开始扫码登录，程序会保存一个.pkl文件，这个文件是程序自动保存的，下次就不需要扫码了。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#wxpy-不仅可以发文本内容，也可以发图片，文件，视频等。感觉很方便，感兴趣的朋友可以去尝试。"><span class="nav-text">wxpy 不仅可以发文本内容，也可以发图片，文件，视频等。感觉很方便，感兴趣的朋友可以去尝试。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#本文链接：https-blog-csdn-net-u013421629-article-details-85626600"><span class="nav-text">本文链接：https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013421629&#x2F;article&#x2F;details&#x2F;85626600</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="路人甲"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">路人甲</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+	<div id="music163player">
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=50 src=""></iframe>
+	</div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">路人甲</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">42k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">38 分钟</span>
+</div>
+
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: '3JciErqPFIaE9B4uTjI4jIRf-gzGzoHsz',
+      appKey: 'gUs7bIavEOCMTDuKiwqjkC2U',
+      placeholder: "有什么想说的吗",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
