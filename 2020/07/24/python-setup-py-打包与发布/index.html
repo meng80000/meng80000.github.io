@@ -48,15 +48,15 @@
   };
 </script>
 
-  <meta name="description" content="setup函数包含的参数解释：">
+  <meta name="description" content="Python 库打包分发(setup.py 编写)简易指南Python 有非常丰富的第三方库可以使用，很多开发者会向 pypi 上提交自己的 Python 包。要想向 pypi 包仓库提交自己开发的包，首先要将自己的代码打包，才能上传分发。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python setup.py 打包与发布">
 <meta property="og:url" content="http://yoursite.com/2020/07/24/python-setup-py-%E6%89%93%E5%8C%85%E4%B8%8E%E5%8F%91%E5%B8%83/index.html">
 <meta property="og:site_name" content="路人甲">
-<meta property="og:description" content="setup函数包含的参数解释：">
+<meta property="og:description" content="Python 库打包分发(setup.py 编写)简易指南Python 有非常丰富的第三方库可以使用，很多开发者会向 pypi 上提交自己的 Python 包。要想向 pypi 包仓库提交自己开发的包，首先要将自己的代码打包，才能上传分发。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-24T09:01:07.000Z">
-<meta property="article:modified_time" content="2020-07-24T10:00:06.952Z">
+<meta property="article:modified_time" content="2020-07-31T07:55:16.226Z">
 <meta property="article:author" content="路人甲">
 <meta property="article:tag" content="模块">
 <meta property="article:tag" content="sdist">
@@ -210,12 +210,18 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-07-24 17:01:07 / 修改时间：18:00:06" itemprop="dateCreated datePublished" datetime="2020-07-24T17:01:07+08:00">2020-07-24</time>
+              <time title="创建时间：2020-07-24 17:01:07" itemprop="dateCreated datePublished" datetime="2020-07-24T17:01:07+08:00">2020-07-24</time>
             </span>
 
-          <!----->
+          <!--
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-31 15:55:16" itemprop="dateModified" datetime="2020-07-31T15:55:16+08:00">2020-07-31</time>
+              </span>--->
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -255,14 +261,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.8k</span>
+              <span>10k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>9 分钟</span>
             </span>
 
         </div>
@@ -274,17 +280,237 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="setup函数包含的参数解释："><a href="#setup函数包含的参数解释：" class="headerlink" title="setup函数包含的参数解释："></a>setup函数包含的参数解释：</h3><a id="more"></a>
+        <h3 id="Python-库打包分发-setup-py-编写-简易指南"><a href="#Python-库打包分发-setup-py-编写-简易指南" class="headerlink" title="Python 库打包分发(setup.py 编写)简易指南"></a>Python 库打包分发(setup.py 编写)简易指南</h3><p>Python 有非常丰富的第三方库可以使用，很多开发者会向 pypi 上提交自己的 Python 包。要想向 pypi 包仓库提交自己开发的包，首先要将自己的代码打包，才能上传分发。</p>
+<a id="more"></a>
 
-<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="params">--name</span> 包名称<span class="params">------------</span>生成的egg名称</span><br><span class="line"><span class="params">--version</span> <span class="params">(-V)</span> 包版本<span class="params">----</span>生成egg包的版本号</span><br><span class="line"><span class="params">--author</span> 程序的作者<span class="params">------</span>包的制作者名字</span><br><span class="line"><span class="params">--author_email</span> 程序的作者的邮箱地址</span><br><span class="line"><span class="params">--maintainer</span> 维护者</span><br><span class="line"><span class="params">--maintainer_email</span> 维护者的邮箱地址</span><br><span class="line"><span class="params">--url</span> 程序的官网地址</span><br><span class="line"><span class="params">--license</span> 程序的授权信息</span><br><span class="line"><span class="params">--description</span> 程序的简单描述<span class="params">-------</span>程序的概要介绍</span><br><span class="line"><span class="params">--long_description</span> 程序的详细描述<span class="params">---</span>程序的详细描述</span><br><span class="line"><span class="params">--platforms</span> 程序适用的软件平台列表</span><br><span class="line"><span class="params">--classifiers</span> 程序的所属分类列表</span><br><span class="line"><span class="params">--keywords</span> 程序的关键字列表</span><br><span class="line"><span class="params">--packages</span> 需要处理的包目录（包含__init__.py的文件夹）<span class="params">-------</span>和setup.py同一目录下搜索各个含有 init.py的包</span><br><span class="line"><span class="params">--py_modules</span> 需要打包的python文件列表</span><br><span class="line"><span class="params">--download_url</span> 程序的下载地址</span><br><span class="line"><span class="params">--cmdclass</span></span><br><span class="line"><span class="params">--data_files</span> 打包时需要打包的数据文件，如图片，配置文件等</span><br><span class="line"><span class="params">--scripts</span> 安装时需要执行的脚步列表</span><br><span class="line"><span class="params">--package_dir</span> 告诉setuptools哪些目录下的文件被映射到哪个源码包。一个例子：package_dir = &#123;'': 'lib'&#125;，表示“root package”中的模块都在lib 目录中。</span><br><span class="line"><span class="params">--requires</span> 定义依赖哪些模块</span><br><span class="line"><span class="params">--provides</span>定义可以为哪些模块提供依赖</span><br><span class="line"><span class="params">--find_packages</span><span class="params">()</span> 对于简单工程来说，手动增加packages参数很容易，刚刚我们用到了这个函数，它默认在和setup.py同一目录下搜索各个含有 init.py的包。</span><br><span class="line">                  其实我们可以将包统一放在一个src目录中，另外，这个包内可能还有aaa.txt文件和data数据文件夹。另外，也可以排除一些特定的包</span><br><span class="line">find_packages<span class="params">(<span class="attr">exclude</span>=[".tests", ".tests.", "tests.", "tests"])</span></span><br><span class="line"><span class="params">--install_requires</span> = [<span class="string">"requests"</span>] 需要安装的依赖包</span><br><span class="line"><span class="params">--entry_points</span> 动态发现服务和插件</span><br></pre></td></tr></table></figure>
+<h3 id="distutils-简介"><a href="#distutils-简介" class="headerlink" title="distutils 简介"></a>distutils 简介</h3><p><code>distutils</code> 是标准库中负责建立 Python 第三方库的安装器，使用它能够进行 Python 模块的安装和发布。distutils 对于简单的分发很有用，但功能缺少。大部分Python用户会使用更先进的setuptools模块</p>
+<h3 id="setuptools-简介"><a href="#setuptools-简介" class="headerlink" title="setuptools 简介"></a>setuptools 简介</h3><p><code>setuptools</code> 是 distutils 增强版，不包括在标准库中。其扩展了很多功能，能够帮助开发者更好的创建和分发 Python 包。大部分 Python 用户都会使用更先进的 setuptools 模块。</p>
+<p>Setuptools 有一个 fork 分支是 distribute。它们共享相同的命名空间，因此如果安装了 distribute，<code>import setuptools</code> 时实际上将导入使用 distribute 创建的包。Distribute 已经合并回 setuptools。</p>
+<p>还有一个大包分发工具是 distutils2，其试图尝试充分利用distutils，detuptools 和 distribute 并成为 Python 标准库中的标准工具。但该计划并没有达到预期的目的，且已经是一个废弃的项目。</p>
+<p>因此，setuptools 是一个优秀的，可靠的 Pthon 包安装与分发工具。以下设计到包的安装与分发均针对 setuptools，并不保证 distutils 可用。</p>
+<h3 id="包格式"><a href="#包格式" class="headerlink" title="包格式"></a>包格式</h3><p>Python 库打包的格式包括 Wheel 和 Egg。Egg 格式是由 setuptools 在 2004 年引入，而 Wheel 格式是由 PEP427 在 2012 年定义。使用 Wheel 和 Egg 安装都不需要重新构建和编译，其在发布之前就应该完成测试和构建。</p>
+<p>Egg 和 Wheel 本质上都是一个 zip 格式包，Egg 文件使用 .egg 扩展名，Wheel 使用 .whl 扩展名。Wheel 的出现是为了替代 Egg，其现在被认为是 Python 的二进制包的标准格式。</p>
+<p>以下是 Wheel 和 Egg 的主要区别：</p>
+<ul>
+<li>Wheel 有一个官方的 PEP427 来定义，而 Egg 没有 PEP 定义</li>
+<li>Wheel 是一种分发格式，即打包格式。而 Egg 既是一种分发格式，也是一种运行时安装的格式，并且是可以被直接 import</li>
+<li>Wheel 文件不会包含 .pyc 文件</li>
+<li>Wheel 使用和 PEP376 兼容的 .dist-info 目录，而 Egg 使用 .egg-info 目录</li>
+<li>Wheel 有着更丰富的命名规则。</li>
+<li>Wheel 是有版本的。每个 Wheel 文件都包含 wheel 规范的版本和打包的实现</li>
+<li>Wheel 在内部被 sysconfig path type 管理，因此转向其他格式也更容易</li>
+</ul>
+<p>详细描述可见：<a href="https://packaging.python.org/discussions/wheel-vs-egg/" target="_blank" rel="noopener">Wheel vs Egg</a></p>
+<h3 id="setup-py-文件"><a href="#setup-py-文件" class="headerlink" title="setup.py 文件"></a>setup.py 文件</h3><p>Python 库打包分发的关键在于编写 setup.py 文件。setup.py 文件编写的规则是从 setuptools 或者 distuils 模块导入 setup 函数，并传入各类参数进行调用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding=utf-8</span></span><br><span class="line"><span class="keyword">from</span> setuptools <span class="keyword">import</span> setup, find_packages, Extension</span><br><span class="line"></span><br><span class="line">setup(</span><br><span class="line">    name=<span class="string">'sdk_tool'</span>,    <span class="comment"># 安装包名</span></span><br><span class="line">    version=<span class="string">'1.0.3'</span>,    <span class="comment"># 打包安装软件的版本号</span></span><br><span class="line">    description=<span class="string">'Harvest DataLab data api service'</span>,</span><br><span class="line">    author=<span class="string">'xxx'</span>,    <span class="comment"># 提供与包相关的其他维护者的名字</span></span><br><span class="line">    author_email=<span class="string">'xxx@xxx.cn'</span>,    <span class="comment"># 他维护者的邮箱</span></span><br><span class="line">    long_description=<span class="string">"flask demo"</span>,    <span class="comment"># 程序的详细描述</span></span><br><span class="line">    url=<span class="string">'http://datalab.jsfund.cn/'</span>,    <span class="comment"># 包相关网站主页的的访问地址</span></span><br><span class="line">    download_url=<span class="string">""</span>,  <span class="comment"># 下载安装包(zip , exe)的url</span></span><br><span class="line">    keywords=<span class="string">'Financial Data'</span>,</span><br><span class="line">    zip_safe=<span class="literal">False</span>,    <span class="comment"># 提供与包相关的其他维护者的名字</span></span><br><span class="line">    python_requires=<span class="string">"&gt;=3.6"</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对于C,C++,Java 等第三方扩展模块一起打包时，需要指定扩展名、扩展源码、以及任何编译/链接 要求（包括目录、链接库等）</span></span><br><span class="line">    ext_modules = [Extension(<span class="string">'data'</span>,[<span class="string">'data.c'</span>])],</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 需要处理的包目录（必须包含__init__.py文件）</span></span><br><span class="line">    <span class="comment"># 需要打包的package,使用find_packages 来动态获取package，exclude参数的存在，使打包的时候，排除掉这些文件</span></span><br><span class="line">    packages = find_packages(exclude=[<span class="string">"test"</span>, <span class="string">"test.*"</span>]),</span><br><span class="line"></span><br><span class="line">    <span class="comment">##########################################</span></span><br><span class="line">    <span class="comment"># 首先告诉程序去哪个目录中找包，因此有了packages参数，</span></span><br><span class="line">    <span class="comment"># 其次，告诉程序我包的起始路径是怎么样的，因此有了package_dir参数</span></span><br><span class="line">    <span class="comment"># 最后，找到包以后，我应该把哪些文件打到包里面，因此有了package_data参数</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 包含所有src目录下的包 ---------项目中的所有源码和测试用例文件目录一般都存放在统一的src目录下方便管理，默认也是创建src目录	</span></span><br><span class="line">    <span class="comment"># packages = find_packages('src'),</span></span><br><span class="line">    <span class="comment"># package_dir = &#123;'':'src'&#125;,</span></span><br><span class="line">    package_data = &#123;</span><br><span class="line">    <span class="comment"># 包含所有.txt文件</span></span><br><span class="line">    <span class="string">""</span>:[<span class="string">".txt"</span>],</span><br><span class="line">    <span class="comment"># 包含data目录下所有的.dat文件</span></span><br><span class="line">    <span class="string">"test"</span>:[<span class="string">"data/.dat"</span>],</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">##########################################</span></span><br><span class="line">    <span class="comment"># 需要安装的依赖</span></span><br><span class="line">    install_requires=[</span><br><span class="line">        <span class="string">"requests&gt;=2.21.0"</span>,</span><br><span class="line">        <span class="string">"PyMySQL&gt;=0.9.3"</span>,</span><br><span class="line">        <span class="string">"numpy==1.18.5"</span>,</span><br><span class="line">        <span class="string">"pandas==0.25.0"</span>,</span><br><span class="line">    ],</span><br><span class="line">    <span class="comment"># 程序的所属分类列表</span></span><br><span class="line">    classifiers=[</span><br><span class="line">        <span class="string">'Development Status :: 4 - Beta'</span>,</span><br><span class="line">        <span class="string">'Programming Language :: Python :: 3.6'</span>,</span><br><span class="line">        <span class="string">'License :: OSI Approved :: BSD License'</span></span><br><span class="line">    ],</span><br><span class="line">    include_package_data=<span class="literal">True</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 
-<h3 id="在同级目录下建立-setup-py"><a href="#在同级目录下建立-setup-py" class="headerlink" title="在同级目录下建立 setup.py"></a>在同级目录下建立 setup.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding=utf-8</span></span><br><span class="line"><span class="keyword">from</span> setuptools <span class="keyword">import</span> setup, find_packages, Extension</span><br><span class="line"></span><br><span class="line">setup(</span><br><span class="line">    name=<span class="string">'sdk_tool'</span>,    <span class="comment"># 安装包名</span></span><br><span class="line">    version=<span class="string">'1.0.3'</span>,    <span class="comment"># 打包安装软件的版本号</span></span><br><span class="line">    description=<span class="string">'Harvest DataLab data api service'</span>,</span><br><span class="line">    author=<span class="string">'xxx'</span>,    <span class="comment"># 提供与包相关的其他维护者的名字</span></span><br><span class="line">    author_email=<span class="string">'xxx@xxx.cn'</span>,    <span class="comment"># 他维护者的邮箱</span></span><br><span class="line">    long_description=<span class="string">"flask demo"</span>,    <span class="comment"># 程序的详细描述</span></span><br><span class="line">    url=<span class="string">'http://datalab.jsfund.cn/'</span>,    <span class="comment"># 包相关网站主页的的访问地址</span></span><br><span class="line">    download_url=<span class="string">""</span>,  <span class="comment"># 下载安装包(zip , exe)的url</span></span><br><span class="line">    keywords=<span class="string">'Financial Data'</span>,</span><br><span class="line">    zip_safe=<span class="literal">False</span>,    <span class="comment"># 提供与包相关的其他维护者的名字</span></span><br><span class="line">    python_requires=<span class="string">"&gt;=3.6"</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对于C,C++,Java 等第三方扩展模块一起打包时，需要指定扩展名、扩展源码、以及任何编译/链接 要求（包括目录、链接库等）</span></span><br><span class="line">    ext_modules = [Extension(<span class="string">'data'</span>,[<span class="string">'data.c'</span>])],</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 需要处理的包目录（必须包含__init__.py文件）</span></span><br><span class="line">    <span class="comment"># 需要打包的package,使用find_packages 来动态获取package，exclude参数的存在，使打包的时候，排除掉这些文件</span></span><br><span class="line">    packages = find_packages(exclude=[<span class="string">"test"</span>, <span class="string">"test.*"</span>]),</span><br><span class="line"></span><br><span class="line">    <span class="comment">##########################################</span></span><br><span class="line">    <span class="comment"># 首先告诉程序去哪个目录中找包，因此有了packages参数，</span></span><br><span class="line">    <span class="comment"># 其次，告诉程序我包的起始路径是怎么样的，因此有了package_dir参数</span></span><br><span class="line">    <span class="comment"># 最后，找到包以后，我应该把哪些文件打到包里面，因此有了package_data参数</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 包含所有src目录下的包 ---------项目中的所有源码和测试用例文件目录一般都存放在统一的src目录下方便管理，默认也是创建src目录	</span></span><br><span class="line">    <span class="comment"># packages = find_packages('src'),</span></span><br><span class="line">    <span class="comment"># package_dir = &#123;'':'src'&#125;,</span></span><br><span class="line">    package_data = &#123;</span><br><span class="line">    <span class="comment"># 包含所有.txt文件</span></span><br><span class="line">    <span class="string">""</span>:[<span class="string">".txt"</span>],</span><br><span class="line">    <span class="comment"># 包含data目录下所有的.dat文件</span></span><br><span class="line">    <span class="string">"test"</span>:[<span class="string">"data/.dat"</span>],</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">##########################################</span></span><br><span class="line">    <span class="comment"># 需要安装的依赖</span></span><br><span class="line">    install_requires=[</span><br><span class="line">        <span class="string">"requests&gt;=2.21.0"</span>,</span><br><span class="line">        <span class="string">"PyMySQL&gt;=0.9.3"</span>,</span><br><span class="line">        <span class="string">"numpy==1.18.5"</span>,</span><br><span class="line">        <span class="string">"pandas==0.25.0"</span>,</span><br><span class="line">    ],</span><br><span class="line">    <span class="comment"># 程序的所属分类列表</span></span><br><span class="line">    classifiers=[</span><br><span class="line">        <span class="string">'Development Status :: 4 - Beta'</span>,</span><br><span class="line">        <span class="string">'Programming Language :: Python :: 3.6'</span>,</span><br><span class="line">        <span class="string">'License :: OSI Approved :: BSD License'</span></span><br><span class="line">    ],</span><br><span class="line">    include_package_data=<span class="literal">True</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p><a href="https://docs.python.org/zh-cn/3/extending/index.html" target="_blank" rel="noopener">如何扩展和嵌入 Python 解释器</a></p>
+<h4 id="参数概述"><a href="#参数概述" class="headerlink" title="参数概述"></a>参数概述</h4><p>setup 函数常用的参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>name</td>
+<td>包名称</td>
+</tr>
+<tr>
+<td>version</td>
+<td>包版本</td>
+</tr>
+<tr>
+<td>author</td>
+<td>程序的作者</td>
+</tr>
+<tr>
+<td>author_email</td>
+<td>程序的作者的邮箱地址</td>
+</tr>
+<tr>
+<td>maintainer</td>
+<td>维护者</td>
+</tr>
+<tr>
+<td>maintainer_email</td>
+<td>维护者的邮箱地址</td>
+</tr>
+<tr>
+<td>url</td>
+<td>程序的官网地址</td>
+</tr>
+<tr>
+<td>license</td>
+<td>程序的授权信息</td>
+</tr>
+<tr>
+<td>description</td>
+<td>程序的简单描述</td>
+</tr>
+<tr>
+<td>long_description</td>
+<td>程序的详细描述</td>
+</tr>
+<tr>
+<td>platforms</td>
+<td>程序适用的软件平台列表</td>
+</tr>
+<tr>
+<td>classifiers</td>
+<td>程序的所属分类列表</td>
+</tr>
+<tr>
+<td>keywords</td>
+<td>程序的关键字列表</td>
+</tr>
+<tr>
+<td>packages</td>
+<td>需要处理的包目录(通常为包含 <strong>init</strong>.py 的文件夹)</td>
+</tr>
+<tr>
+<td>py_modules</td>
+<td>需要打包的 Python 单文件列表</td>
+</tr>
+<tr>
+<td>download_url</td>
+<td>程序的下载地址</td>
+</tr>
+<tr>
+<td>cmdclass</td>
+<td>添加自定义命令</td>
+</tr>
+<tr>
+<td>package_data</td>
+<td>指定包内需要包含的数据文件</td>
+</tr>
+<tr>
+<td>include_package_data</td>
+<td>自动包含包内所有受版本控制(cvs/svn/git)的数据文件</td>
+</tr>
+<tr>
+<td>exclude_package_data</td>
+<td>当 include_package_data 为 True 时该选项用于排除部分文件</td>
+</tr>
+<tr>
+<td>data_files</td>
+<td>打包时需要打包的数据文件，如图片，配置文件等</td>
+</tr>
+<tr>
+<td>ext_modules</td>
+<td>指定扩展模块</td>
+</tr>
+<tr>
+<td>scripts</td>
+<td>指定可执行脚本,安装时脚本会被安装到系统 PATH 路径下</td>
+</tr>
+<tr>
+<td>package_dir</td>
+<td>指定哪些目录下的文件被映射到哪个源码包</td>
+</tr>
+<tr>
+<td>requires</td>
+<td>指定依赖的其他包</td>
+</tr>
+<tr>
+<td>provides</td>
+<td>指定可以为哪些模块提供依赖</td>
+</tr>
+<tr>
+<td>install_requires</td>
+<td>安装时需要安装的依赖包</td>
+</tr>
+<tr>
+<td>entry_points</td>
+<td>动态发现服务和插件，下面详细讲</td>
+</tr>
+<tr>
+<td>setup_requires</td>
+<td>指定运行 setup.py 文件本身所依赖的包</td>
+</tr>
+<tr>
+<td>dependency_links</td>
+<td>指定依赖包的下载地址</td>
+</tr>
+<tr>
+<td>extras_require</td>
+<td>当前包的高级/额外特性需要依赖的分发包</td>
+</tr>
+<tr>
+<td>zip_safe</td>
+<td>不压缩包，而是以目录的形式安装</td>
+</tr>
+</tbody></table>
+<p>更多参数可见：<a href="https://setuptools.readthedocs.io/en/latest/setuptools.html" target="_blank" rel="noopener">https://setuptools.readthedocs.io/en/latest/setuptools.html</a></p>
+<h4 id="find-packages"><a href="#find-packages" class="headerlink" title="find_packages"></a>find_packages</h4><p>对于简单工程来说，手动增加 packages 参数是容易。而对于复杂的工程来说，可能添加很多的包，这是手动添加就变得麻烦。Setuptools 模块提供了一个 <code>find_packages</code> 函数,它默认在与 setup.py 文件同一目录下搜索各个含有 <code>__init__.py</code> 的目录做为要添加的包。</p>
+<p><code>find_packages(where=&#39;.&#39;, exclude=(), include=(&#39;*&#39;,))</code><br><code>find_packages</code> 函数的第一个参数用于指定在哪个目录下搜索包，参数 <strong>exclude</strong> 用于指定排除哪些包，参数 <strong>include</strong> 指出要包含的包。</p>
+<p>默认默认情况下 setup.py 文件只在其所在的目录下搜索包。如果不用 find_packages，想要找到其他目录下的包，也可以设置 package_dir 参数，其指定哪些目录下的文件被映射到哪个源码包，如: <code>package_dir={&#39;&#39;: &#39;src&#39;}</code> 表示 “root package” 中的模块都在 src 目录中。</p>
+<h4 id="包含数据文件"><a href="#包含数据文件" class="headerlink" title="包含数据文件"></a>包含数据文件</h4><ul>
+<li><p>package_data:<br>该参数是一个从包名称到 glob 模式列表的字典。如果数据文件包含在包的子目录中，则 glob 可以包括子目录名称。其格式一般为 <code>{&#39;package_name&#39;: [&#39;files&#39;]}</code>，比如：<code>package_data={&#39;mypkg&#39;: [&#39;data/*.dat&#39;],}</code>。</p>
+</li>
+<li><p>include_package_data:<br>该参数被设置为 True 时自动添加包中受版本控制的数据文件，可替代 package_data，同时，<code>exclude_package_data</code> 可以排除某些文件。注意当需要加入没有被版本控制的文件时，还是仍然需要使用 package_data 参数才行。</p>
+</li>
+<li><p>data_files:<br>该参数通常用于包含不在包内的数据文件，即包的外部文件，如：配置文件，消息目录，数据文件。其指定了一系列二元组，即<code>（目的安装目录，源文件）</code> ，表示哪些文件被安装到哪些目录中。如果目录名是相对路径，则相对于安装前缀进行解释。</p>
+</li>
+<li><p>manifest template:<br><code>manifest template</code> 即编写 <code>MANIFEST.in</code> 文件，文件内容就是需要包含在分发包中的文件。一个 MANIFEST.in 文件如下：</p>
+  <figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">include *<span class="string">.txt</span></span><br><span class="line">recursive-include examples *<span class="string">.txt</span> *<span class="string">.py</span></span><br><span class="line">prune examples/sample?<span class="string">/build</span></span><br></pre></td></tr></table></figure>
 
-<p>如何扩展和嵌入 Python 解释器 ： <a href="https://docs.python.org/zh-cn/3/extending/index.html" target="_blank" rel="noopener">https://docs.python.org/zh-cn/3/extending/index.html</a></p>
-<h3 id="编写安装配置文件-setup-cfg"><a href="#编写安装配置文件-setup-cfg" class="headerlink" title="编写安装配置文件 setup.cfg"></a>编写安装配置文件 setup.cfg</h3><figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[sdist]</span><br><span class="line"><span class="built_in">dist</span>-dir = source</span><br><span class="line"><span class="built_in">dist</span>-dir : 指定发布源码的路径，默认 <span class="built_in">dist</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="MANIFEST-in-文件的编写规则可参考：https-docs-python-org-3-6-distutils-sourcedist-html"><a href="#MANIFEST-in-文件的编写规则可参考：https-docs-python-org-3-6-distutils-sourcedist-html" class="headerlink" title="MANIFEST.in 文件的编写规则可参考：https://docs.python.org/3.6/distutils/sourcedist.html"></a>MANIFEST.in 文件的编写规则可参考：<a href="https://docs.python.org/3.6/distutils/sourcedist.html" target="_blank" rel="noopener">https://docs.python.org/3.6/distutils/sourcedist.html</a></h4><h4 id="生成脚本"><a href="#生成脚本" class="headerlink" title="生成脚本"></a>生成脚本</h4><p>有两个参数 <code>scripts</code> 参数或 <code>console_scripts</code> 可用于生成脚本。</p>
+<p><code>entry_points</code> 参数用来支持自动生成脚本，其值应该为是一个字典，从 entry_point 组名映射到一个表示 entry_point 的字符串或字符串列表，如：</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">setup(</span><br><span class="line">    # other arguments here...</span><br><span class="line">    entry_points=&#123;</span><br><span class="line">        'console_scripts': [</span><br><span class="line">            'foo=foo.entry<span class="symbol">:main</span>',</span><br><span class="line">            'bar=foo.entry<span class="symbol">:main</span>',</span><br><span class="line">        ],    </span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><code>scripts</code> 参数是一个 list，安装包时在该参数中列出的文件会被安装到系统 PATH 路径下。如：</p>
+<p><code>scripts=[&#39;bin/foo.sh&#39;, &#39;bar.py&#39;]</code><br>用如下方法可以将脚本重命名，例如去掉脚本文件的扩展名(.py、.sh):</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> setuptools.command.install_scripts import install_scripts</span><br><span class="line"></span><br><span class="line">class InstallScripts(install_scripts):</span><br><span class="line"></span><br><span class="line">    def <span class="builtin-name">run</span>(self):</span><br><span class="line">        setuptools.command.install_scripts.install_scripts.<span class="builtin-name">run</span>(self)</span><br><span class="line"></span><br><span class="line">        # Rename some<span class="built_in"> script </span>files</span><br><span class="line">        <span class="keyword">for</span><span class="built_in"> script </span><span class="keyword">in</span> self.get_outputs():</span><br><span class="line">            <span class="keyword">if</span> basename.endswith(<span class="string">".py"</span>) <span class="keyword">or</span> basename.endswith(<span class="string">".sh"</span>):</span><br><span class="line">                dest = script[:-3]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                continue</span><br><span class="line">            <span class="builtin-name">print</span>(<span class="string">"moving %s to %s"</span> % (script, dest))</span><br><span class="line">            shutil.move(script, dest)</span><br><span class="line"></span><br><span class="line">setup(</span><br><span class="line">    # other arguments here<span class="built_in">..</span>.</span><br><span class="line">    cmdclass=&#123;</span><br><span class="line">        <span class="string">"install_scripts"</span>: InstallScripts</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>其中，<strong>cmdclass</strong> 参数表示自定制命令，后文详述。</p>
+<h4 id="ext-modules"><a href="#ext-modules" class="headerlink" title="ext_modules"></a>ext_modules</h4><p><code>ext_modules</code> 参数用于构建 C 和 C++ 扩展扩展包。其是 Extension 实例的列表，每一个 Extension 实例描述了一个独立的扩展模块，扩展模块可以设置扩展包名，头文件、源文件、链接库及其路径、宏定义和编辑参数等。如：</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">setup(</span><br><span class="line">    # other arguments here...</span><br><span class="line">    ext_modules=[</span><br><span class="line">        Extension('foo',</span><br><span class="line">                  glob(<span class="name">path</span>.join(<span class="name">here</span>, 'src', '*.c')),</span><br><span class="line">                  libraries = [ 'rt' ],</span><br><span class="line">                  include_dirs=[numpy.get_include()])</span><br><span class="line">    ]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>详细了解可参考：<a href="https://docs.python.org/3.6/distutils/setupscript.html#preprocessor-options" target="_blank" rel="noopener">https://docs.python.org/3.6/distutils/setupscript.html#preprocessor-options</a></p>
+<h4 id="zip-safe"><a href="#zip-safe" class="headerlink" title="zip_safe"></a>zip_safe</h4><p><code>zip_safe</code> 参数决定包是否作为一个 zip 压缩后的 egg 文件安装，还是作为一个以 .egg 结尾的目录安装。因为有些工具不支持 zip 压缩文件，而且压缩后的包也不方便调试，所以建议将其设为 False，即 <code>zip_safe=False</code>。</p>
+<h4 id="自定义命令"><a href="#自定义命令" class="headerlink" title="自定义命令"></a>自定义命令</h4><p>Setup.py 文件有很多内置的的命令，可以使用 <code>python setup.py --help-commands</code> 查看。如果想要定制自己需要的命令，可以添加 cmdclass 参数，其值为一个 dict。实现自定义命名需要继承 <code>setuptools.Command</code> 或者 <code>distutils.core.Command</code> 并重写 run 方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> setuptools <span class="keyword">import</span> setup, Command</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InstallCommand</span><span class="params">(Command)</span>:</span></span><br><span class="line">    description = <span class="string">"Installs the foo."</span></span><br><span class="line">    user_options = [</span><br><span class="line">        (<span class="string">'foo='</span>, <span class="literal">None</span>, <span class="string">'Specify the foo to bar.'</span>),</span><br><span class="line">    ]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize_options</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.foo = <span class="literal">None</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">finalize_options</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">assert</span> self.foo <span class="keyword">in</span> (<span class="literal">None</span>, <span class="string">'myFoo'</span>, <span class="string">'myFoo2'</span>), <span class="string">'Invalid foo!'</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        install_all_the_things()</span><br><span class="line"></span><br><span class="line">setup(</span><br><span class="line">    ...,</span><br><span class="line">    cmdclass=&#123;</span><br><span class="line">        <span class="string">'install'</span>: InstallCommand,</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h4 id="依赖关系"><a href="#依赖关系" class="headerlink" title="依赖关系"></a>依赖关系</h4><p>如果包依赖其他的包，可以指定 <code>install_requires</code> 参数，其值为一个 list，如：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">install_requires</span>=[</span><br><span class="line">    <span class="string">'requests&gt;=1.0'</span>,</span><br><span class="line">    <span class="string">'flask&gt;=1.0'</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>指定该参数后，在安装包时会自定从 pypi 仓库中下载指定的依赖包安装。</p>
+<p>此外，还支持从指定链接下载依赖，即指定 <code>dependency_links</code> 参数，如：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dependency_links</span> = [</span><br><span class="line">    <span class="string">"http://packages.example.com/snapshots/foo-1.0.tar.gz"</span>,</span><br><span class="line">    <span class="string">"http://example2.com/p/bar-1.0.tar.gz"</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h4 id="分类信息"><a href="#分类信息" class="headerlink" title="分类信息"></a>分类信息</h4><p><code>classifiers</code> 参数说明包的分类信息。所有支持的分类列表见：<a href="https://pypi.org/pypi?%3Aaction=list_classifiers" target="_blank" rel="noopener">https://pypi.org/pypi?%3Aaction=list_classifiers</a></p>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">classifiers = [</span><br><span class="line">    <span class="comment"># 发展时期,常见的如下</span></span><br><span class="line">    <span class="comment">#   3 - Alpha</span></span><br><span class="line">    <span class="comment">#   4 - Beta</span></span><br><span class="line">    <span class="comment">#   5 - Production/Stable</span></span><br><span class="line">    <span class="string">'Development Status :: 3 - Alpha'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 开发的目标用户</span></span><br><span class="line">    <span class="string">'Intended Audience :: Developers'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 属于什么类型</span></span><br><span class="line">    <span class="string">'Topic :: Software Development :: Build Tools'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 许可证信息</span></span><br><span class="line">    <span class="string">'License :: OSI Approved :: MIT License'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 目标 Python 版本</span></span><br><span class="line">    <span class="string">'Programming Language :: Python :: 2'</span>,</span><br><span class="line">    <span class="string">'Programming Language :: Python :: 2.7'</span>,</span><br><span class="line">    <span class="string">'Programming Language :: Python :: 3'</span>,</span><br><span class="line">    <span class="string">'Programming Language :: Python :: 3.3'</span>,</span><br><span class="line">    <span class="string">'Programming Language :: Python :: 3.4'</span>,</span><br><span class="line">    <span class="string">'Programming Language :: Python :: 3.5'</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="setup-py-命令"><a href="#setup-py-命令" class="headerlink" title="setup.py 命令"></a>setup.py 命令</h3><p><code>setup.py</code> 文件有很多内置命令可供使用，查看所有支持的命令：</p>
+<p><code>python setup.py --help-commands</code></p>
+<p>此处列举一些常用命令：</p>
+<ul>
+<li><p>build:</p>
+<p>  构建安装时所需的所有内容</p>
+</li>
+<li><p>sdist:</p>
+<p>  构建源码分发包，在 Windows 下为 zip 格式，Linux 下为 tag.gz 格式 。执行 sdist 命令时，默认会被打包的文件：</p>
+<p>  所有 py_modules 或 packages 指定的源码文件<br>  所有 ext_modules 指定的文件<br>  所有 package_data 或 data_files 指定的文件<br>  所有 scripts 指定的脚本文件<br>  README、README.txt、setup.py 和 setup.cfg文件<br>  该命令构建的包主要用于发布，例如上传到 pypi 上。</p>
+</li>
+<li><p>bdist:</p>
+<p>  构建一个二进制的分发包。</p>
+</li>
+<li><p>bdist_egg:</p>
+<p>  构建一个 egg 分发包，经常用来替代基于 bdist 生成的模式</p>
+</li>
+<li><p>install:</p>
+<p>  安装包到系统环境中。</p>
+</li>
+<li><p>develop:</p>
+<p>  以开发方式安装包，该命名不会真正的安装包，而是在系统环境中创建一个软链接指向包实际所在目录。这边在修改包之后不用再安装就能生效，便于调试。</p>
+</li>
+<li><p>register、upload:</p>
+<p>  用于包的上传发布，后文详述。</p>
+</li>
+</ul>
+<h3 id="编写安装配置文件-setup-cfg"><a href="#编写安装配置文件-setup-cfg" class="headerlink" title="编写安装配置文件 setup.cfg"></a>编写安装配置文件 setup.cfg</h3><p><code>setup.cfg</code> 文件用于提供 <code>setup.py</code> 的默认参数，详细的书写规则可参考：<a href="https://docs.python.org/3/distutils/configfile.html" target="_blank" rel="noopener">https://docs.python.org/3/distutils/configfile.html</a></p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[easy_install]</span></span><br><span class="line"><span class="comment"># 指定安装源为豆瓣源</span></span><br><span class="line"><span class="attr">index-url</span> = https://pypi.doubanio.com/simple/</span><br><span class="line"></span><br><span class="line"><span class="section">[sdist]</span></span><br><span class="line"><span class="comment"># 指定发布源码的路径，默认 dist</span></span><br><span class="line"><span class="attr">dist-dir</span> = source</span><br></pre></td></tr></table></figure>
 <p>如何编写setup.cfg:</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">Common commands: (see '<span class="comment">--help-commands' for more)</span></span><br><span class="line"></span><br><span class="line">  setup.py build      will build the package underneath 'build/'</span><br><span class="line">  setup.py <span class="keyword">install</span>    will <span class="keyword">install</span> the <span class="keyword">package</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Global</span> options:</span><br><span class="line">  <span class="comment">--verbose (-v)  run verbosely (default)</span></span><br><span class="line">  <span class="comment">--quiet (-q)    run quietly (turns verbosity off)</span></span><br><span class="line">  <span class="comment">--dry-run (-n)  don't actually do anything</span></span><br><span class="line">  <span class="comment">--help (-h)     show detailed help message</span></span><br><span class="line">  <span class="comment">--no-user-cfg   ignore pydistutils.cfg in your home directory</span></span><br><span class="line"></span><br><span class="line">Options <span class="keyword">for</span> <span class="string">'sdist'</span> command:</span><br><span class="line">  <span class="comment">--template (-t)        name of manifest template file [default: MANIFEST.in]</span></span><br><span class="line">  <span class="comment">--manifest (-m)        name of manifest file [default: MANIFEST]</span></span><br><span class="line">  <span class="comment">--use-defaults         include the default file set in the manifest</span></span><br><span class="line">                         [<span class="keyword">default</span>; disable <span class="keyword">with</span> <span class="comment">--no-defaults]</span></span><br><span class="line">  <span class="comment">--no-defaults          don't include the default file set</span></span><br><span class="line">  <span class="comment">--prune                specifically exclude files/directories that should</span></span><br><span class="line">                         <span class="keyword">not</span> be <span class="keyword">distributed</span> (<span class="keyword">build</span> tree, RCS/CVS dirs, etc.)</span><br><span class="line">                         [<span class="keyword">default</span>; disable <span class="keyword">with</span> <span class="comment">--no-prune]</span></span><br><span class="line">  <span class="comment">--no-prune             don't automatically exclude anything</span></span><br><span class="line">  <span class="comment">--manifest-only (-o)   just regenerate the manifest and then stop (implies</span></span><br><span class="line">                         <span class="comment">--force-manifest)</span></span><br><span class="line">  <span class="comment">--force-manifest (-f)  forcibly regenerate the manifest and carry on as</span></span><br><span class="line">                         usual. Deprecated: <span class="keyword">now</span> the manifest <span class="keyword">is</span> <span class="keyword">always</span></span><br><span class="line">                         regenerated.</span><br><span class="line">  <span class="comment">--formats              formats for source distribution (comma-separated</span></span><br><span class="line">                         <span class="keyword">list</span>)</span><br><span class="line">  <span class="comment">--keep-temp (-k)       keep the distribution tree around after creating</span></span><br><span class="line">                         <span class="keyword">archive</span> <span class="keyword">file</span>(s)</span><br><span class="line">  <span class="comment">--dist-dir (-d)        directory to put the source distribution archive(s)</span></span><br><span class="line">                         <span class="keyword">in</span> [<span class="keyword">default</span>: dist]</span><br><span class="line">  <span class="comment">--medata-check         Ensure that all required elements of meta-data are</span></span><br><span class="line">                         supplied. Warn <span class="keyword">if</span> <span class="keyword">any</span> missing. [<span class="keyword">default</span>]</span><br><span class="line">  <span class="comment">--owner (-u)           Owner name used when creating a tar file [default:</span></span><br><span class="line">                         <span class="keyword">current</span> <span class="keyword">user</span>]</span><br><span class="line">  <span class="comment">--group (-g)           Group name used when creating a tar file [default:</span></span><br><span class="line">                         <span class="keyword">current</span> <span class="keyword">group</span>]</span><br><span class="line">  <span class="comment">--help-formats         list available distribution formats</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">usage</span>: setup.py [global_opts] cmd1 [cmd1_opts] [cmd2 [cmd2_opts] ...]</span><br><span class="line">   <span class="keyword">or</span>: setup.py <span class="comment">--help [cmd1 cmd2 ...]</span></span><br><span class="line">   <span class="keyword">or</span>: setup.py <span class="comment">--help-commands</span></span><br><span class="line">   <span class="keyword">or</span>: setup.py cmd <span class="comment">--help</span></span><br></pre></td></tr></table></figure>
-
 <h3 id="发布软件-压缩包"><a href="#发布软件-压缩包" class="headerlink" title="发布软件 (压缩包)"></a>发布软件 (压缩包)</h3><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">linux : <span class="keyword">python</span> setup.<span class="keyword">py</span>  sdist</span><br><span class="line">windows : setup.<span class="keyword">py</span> sdist</span><br></pre></td></tr></table></figure>
 <p>指定发布格式,同时生成两个压缩包: <code>python setup.py  sdist --formats=gztar,zip</code><br>windows exe : <code>python setup.py bdist_wininst</code></p>
 <pre><code>--formats:
@@ -300,7 +526,47 @@ tar -&gt; .tar</code></pre><h3 id="安装源码包，然后你就可以导入了
 </ol>
 <p>其中： log文件内容是安装目录：</p>
 <figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">E:<span class="symbol">\.</span>..<span class="symbol">\L</span>ib<span class="symbol">\s</span>ite-packages<span class="symbol">\p</span>ackage.py</span><br><span class="line">E:<span class="symbol">\.</span>..<span class="symbol">\L</span>ib<span class="symbol">\s</span>ite-packages<span class="symbol">\_</span>_pycache__<span class="symbol">\p</span>ackage.cpython-37.pyc</span><br><span class="line">E:<span class="symbol">\.</span>..<span class="symbol">\L</span>ib<span class="symbol">\s</span>ite-packages<span class="symbol">\p</span>ackage-1.0-py3.7.egg-info</span><br></pre></td></tr></table></figure>
-
+<h3 id="版本命名"><a href="#版本命名" class="headerlink" title="版本命名"></a>版本命名</h3><p>包版本的命名格式应为如下形式:</p>
+<p><code>N.N[.N]+[{a|b|c|rc}N[.N]+][.postN][.devN]</code></p>
+<p>从左向右做一个简单的解释：</p>
+<ul>
+<li>“N.N”: 必须的部分，两个 “N” 分别代表了主版本和副版本号</li>
+<li>“[.N]”: 次要版本号，可以有零或多个</li>
+<li>“{a|b|c|rc}”: 阶段代号，可选, a, b, c, rc 分别代表 alpha, beta, candidate 和 release candidate</li>
+<li>“N[.N]”: 阶段版本号，如果提供，则至少有一位主版本号，后面可以加无限多位的副版本号</li>
+<li>“.postN”: 发行后更新版本号，可选</li>
+<li>“.devN”: 开发期间的发行版本号，可选</li>
+</ul>
+<h3 id="easy-install-与-pip"><a href="#easy-install-与-pip" class="headerlink" title="easy_install 与 pip"></a>easy_install 与 pip</h3><p><code>easy_insall</code> 是 setuptool 包提供的第三方包安装工具，而 <code>pip</code> 是 Python 中一个功能完备的包管理工具，是 easy_install 的改进版，提供更好的提示信息，删除包等功能。</p>
+<p><code>pip</code> 相对于 easy_install 进行了以下几个方面的改进:</p>
+<ul>
+<li>所有的包是在安装之前就下载了，所以不可能出现只安装了一部分的情况</li>
+<li>在终端上的输出更加友好</li>
+<li>对于动作的原因进行持续的跟踪。例如，如果一个包正在安装，那么 pip 就会跟踪为什么这个包会被安装</li>
+<li>错误信息会非常有用</li>
+<li>代码简洁精悍可以很好的编程</li>
+<li>不必作为 egg 存档，能扁平化安装(仍然保存 egg 元数据)</li>
+<li>原生的支持其他版本控制系统(Git, Mercurial and Bazaar)</li>
+<li>加入卸载包功能</li>
+<li>可以简单的定义修改一系列的安装依赖，还可以可靠的赋值一系列依赖包</li>
+</ul>
+<h3 id="发布包"><a href="#发布包" class="headerlink" title="发布包"></a>发布包</h3><p><a href="https://pypi.org/" target="_blank" rel="noopener">PyPI</a> (Python Package Index) 是 Python 官方维护的第三方包仓库，用于统一存储和管理开发者发布的 Python 包。</p>
+<p>如果要发布自己的包，需要先到 <a href="https://pypi.org/account/register/" target="_blank" rel="noopener">pypi</a> 上注册账号。然后创建 <code>~/.pypirc</code> 文件，此文件中配置 PyPI 访问地址和账号。如的.pypirc文件内容请根据自己的账号来修改。</p>
+<p>典型的 .pypirc 文件</p>
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[distutils]</span><br><span class="line">index-servers = pypi</span><br><span class="line"></span><br><span class="line">[pypi]</span><br><span class="line"><span class="symbol">username:</span>xxx</span><br><span class="line"><span class="symbol">password:</span>xxx</span><br></pre></td></tr></table></figure>
+<p>接着注册项目：</p>
+<p><code>python setup.py register</code></p>
+<p>该命令在 PyPi 上注册项目信息，成功注册之后，可以在 PyPi 上看到项目信息。最后构建源码包发布即可：</p>
+<p><code>python setup.py sdist upload</code></p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="https://stackoverflow.com/questions/6344076/differences-between-distribute-distutils-setuptools-and-distutils2" target="_blank" rel="noopener">Building and Distributing Packages with Setuptools</a></li>
+<li><a href="https://blog.zengrong.net/post/2169.html" target="_blank" rel="noopener">https://blog.zengrong.net/post/2169.html</a></li>
+<li><a href="https://stackoverflow.com/questions/6344076/differences-between-distribute-distutils-setuptools-and-distutils2" target="_blank" rel="noopener">Differences between distribute, distutils, setuptools and distutils2?</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/opensource/os-pythonpackaging/index.html" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/opensource/os-pythonpackaging/index.html</a></li>
+<li><a href="http://python-packaging-zh.readthedocs.io/zh_CN/latest/index.html" target="_blank" rel="noopener">http://python-packaging-zh.readthedocs.io/zh_CN/latest/index.html</a></li>
+<li><a href="https://stackoverflow.com/questions/1321270/how-to-extend-distutils-with-a-simple-post-install-script/1321345" target="_blank" rel="noopener">How to extend distutils with a simple post install script?</a></li>
+<li><a href="https://stackoverflow.com/questions/3220404/why-use-pip-over-easy-install" target="_blank" rel="noopener">Why use pip over easy_install?</a></li>
+</ul>
 
     </div>
 
@@ -395,7 +661,7 @@ tar -&gt; .tar</code></pre><h3 id="安装源码包，然后你就可以导入了
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#setup函数包含的参数解释："><span class="nav-text">setup函数包含的参数解释：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在同级目录下建立-setup-py"><span class="nav-text">在同级目录下建立 setup.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写安装配置文件-setup-cfg"><span class="nav-text">编写安装配置文件 setup.cfg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布软件-压缩包"><span class="nav-text">发布软件 (压缩包)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装源码包，然后你就可以导入了"><span class="nav-text">安装源码包，然后你就可以导入了</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装后删除"><span class="nav-text">安装后删除</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-库打包分发-setup-py-编写-简易指南"><span class="nav-text">Python 库打包分发(setup.py 编写)简易指南</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#distutils-简介"><span class="nav-text">distutils 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#setuptools-简介"><span class="nav-text">setuptools 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#包格式"><span class="nav-text">包格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#setup-py-文件"><span class="nav-text">setup.py 文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#参数概述"><span class="nav-text">参数概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#find-packages"><span class="nav-text">find_packages</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#包含数据文件"><span class="nav-text">包含数据文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MANIFEST-in-文件的编写规则可参考：https-docs-python-org-3-6-distutils-sourcedist-html"><span class="nav-text">MANIFEST.in 文件的编写规则可参考：https:&#x2F;&#x2F;docs.python.org&#x2F;3.6&#x2F;distutils&#x2F;sourcedist.html</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成脚本"><span class="nav-text">生成脚本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ext-modules"><span class="nav-text">ext_modules</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zip-safe"><span class="nav-text">zip_safe</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义命令"><span class="nav-text">自定义命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#依赖关系"><span class="nav-text">依赖关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分类信息"><span class="nav-text">分类信息</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#setup-py-命令"><span class="nav-text">setup.py 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写安装配置文件-setup-cfg"><span class="nav-text">编写安装配置文件 setup.cfg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布软件-压缩包"><span class="nav-text">发布软件 (压缩包)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装源码包，然后你就可以导入了"><span class="nav-text">安装源码包，然后你就可以导入了</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装后删除"><span class="nav-text">安装后删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版本命名"><span class="nav-text">版本命名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#easy-install-与-pip"><span class="nav-text">easy_install 与 pip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布包"><span class="nav-text">发布包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -464,12 +730,12 @@ tar -&gt; .tar</code></pre><h3 id="安装源码包，然后你就可以导入了
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">52k</span>
+    <span title="站点总字数">58k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">48 分钟</span>
+    <span title="站点阅读时长">52 分钟</span>
 </div>
 
 
