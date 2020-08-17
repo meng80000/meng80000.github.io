@@ -3,7 +3,7 @@ title: python3 pandas to_sql填坑
 date: 2020-07-15 18:33:15
 tags:
         - 数据分析
-        - python
+        - pandas
 categories: python
 ---
 
