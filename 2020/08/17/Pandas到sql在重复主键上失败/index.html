@@ -48,15 +48,21 @@
   };
 </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="路人甲">
-<meta property="og:url" content="http://yoursite.com/tags/supervision/index.html">
+  <meta name="description" content="问题：使用pandasdf.to_sql()函数追加到现有表。 设置了if_exists&#x3D;&amp;apos;append&amp;apos;，但是表有主键。     在尝试对现有表进行append操作时，希望执行与insert ignore等效的操作，这样可以避免重复的条目错误。   对于pandas，这是可能的吗？还是需要编写一个显式查询？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pandas到sql在重复主键上失败">
+<meta property="og:url" content="http://yoursite.com/2020/08/17/Pandas%E5%88%B0sql%E5%9C%A8%E9%87%8D%E5%A4%8D%E4%B8%BB%E9%94%AE%E4%B8%8A%E5%A4%B1%E8%B4%A5/index.html">
 <meta property="og:site_name" content="路人甲">
+<meta property="og:description" content="问题：使用pandasdf.to_sql()函数追加到现有表。 设置了if_exists&#x3D;&amp;apos;append&amp;apos;，但是表有主键。     在尝试对现有表进行append操作时，希望执行与insert ignore等效的操作，这样可以避免重复的条目错误。   对于pandas，这是可能的吗？还是需要编写一个显式查询？">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-17T03:46:37.000Z">
+<meta property="article:modified_time" content="2020-08-17T03:54:13.379Z">
 <meta property="article:author" content="路人甲">
+<meta property="article:tag" content="数据分析">
+<meta property="article:tag" content="pandas">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/tags/supervision/">
+<link rel="canonical" href="http://yoursite.com/2020/08/17/Pandas%E5%88%B0sql%E5%9C%A8%E9%87%8D%E5%A4%8D%E4%B8%BB%E9%94%AE%E4%B8%8A%E5%A4%B1%E8%B4%A5/">
 
 
 <script id="page-configurations">
@@ -64,11 +70,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false
+    isPost: true
   };
 </script>
 
-  <title>标签: supervision | 路人甲</title>
+  <title>Pandas到sql在重复主键上失败 | 路人甲</title>
   
 
 
@@ -177,54 +183,154 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h1 class="collection-header">supervision
-          <small>标签</small>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/17/Pandas%E5%88%B0sql%E5%9C%A8%E9%87%8D%E5%A4%8D%E4%B8%BB%E9%94%AE%E4%B8%8A%E5%A4%B1%E8%B4%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="路人甲">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="路人甲">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Pandas到sql在重复主键上失败
         </h1>
-      </div>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-17 11:46:37 / 修改时间：11:54:13" itemprop="dateCreated datePublished" datetime="2020-08-17T11:46:37+08:00">2020-08-17</time>
+            </span>
+
+          <!----->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/08/17/Pandas%E5%88%B0sql%E5%9C%A8%E9%87%8D%E5%A4%8D%E4%B8%BB%E9%94%AE%E4%B8%8A%E5%A4%B1%E8%B4%A5/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/17/Pandas%E5%88%B0sql%E5%9C%A8%E9%87%8D%E5%A4%8D%E4%B8%BB%E9%94%AE%E4%B8%8A%E5%A4%B1%E8%B4%A5/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>808</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h1 class="collection-header">2020</h1>
+        <h3 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h3><pre><code>使用pandasdf.to_sql()函数追加到现有表。
+设置了if_exists=&apos;append&apos;，但是表有主键。    
+在尝试对现有表进行append操作时，希望执行与insert ignore等效的操作，这样可以避免重复的条目错误。  
+对于pandas，这是可能的吗？还是需要编写一个显式查询？</code></pre><a id="more"></a>
+
+<h3 id="目前解决方案："><a href="#目前解决方案：" class="headerlink" title="目前解决方案："></a>目前解决方案：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方法一：mysql</span></span><br><span class="line">insert_sql = <span class="string">"""</span></span><br><span class="line"><span class="string">    insert into tableA(ename,cname,sex,role,company)</span></span><br><span class="line"><span class="string">    SELECT %s,%s,%s,%s </span></span><br><span class="line"><span class="string">    FROM DUAL</span></span><br><span class="line"><span class="string">    WHERE NOT EXISTS (SELECT ename FROM tableA</span></span><br><span class="line"><span class="string">    WHERE ename=%s and cname=%s)</span></span><br><span class="line"><span class="string">    """</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方法二：pandas</span></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> sqlalchemy.exc <span class="keyword">import</span> SQLAlchemyError, IntegrityError</span><br><span class="line"></span><br><span class="line">df = pd.read_excel(<span class="string">"data.xlsx"</span>, sheet_name=<span class="string">"people"</span>).fillna(<span class="string">""</span>)</span><br><span class="line">df.columns = [<span class="string">"ename"</span>, <span class="string">"cname"</span>, <span class="string">"sex"</span>, <span class="string">"role"</span>, <span class="string">"company"</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 主键冲突直接写入失败。</span></span><br><span class="line">df.to_sql(<span class="string">"tableA"</span>, db_mysql.engine, if_exists=<span class="string">"append"</span>, index=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将df切分单条形式的df入库。</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(df)):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        df.iloc[i:i+<span class="number">1</span>].to_sql(<span class="string">"tableA"</span>, db_mysql.engine, if_exists=<span class="string">"append"</span>,index=<span class="literal">False</span>)</span><br><span class="line">    <span class="keyword">except</span> IntegrityError:</span><br><span class="line">        print(<span class="string">"已存在"</span>, df.iloc[i:i+<span class="number">1</span>][[<span class="string">"ename"</span>, <span class="string">"cname"</span>]])</span><br></pre></td></tr></table></figure>
+
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-01-02T01:27:33+08:00"
-              content="2020-01-02">
-          01-02
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              
+			  <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="tag"><i class="fa fa-tag" aria-hidden="true"></i> 数据分析</a>
+              
+			  <a href="/tags/pandas/" rel="tag"><i class="fa fa-tag" aria-hidden="true"></i> pandas</a>
+          </div>
 
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/01/02/Linux%E4%B8%8Bsupervisor%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/" itemprop="url">
-            <span itemprop="name">Linux下supervisor安装与使用</span>
-          </a>
-      </h2>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/24/python-setup-py-%E6%89%93%E5%8C%85%E4%B8%8E%E5%8F%91%E5%B8%83/" rel="prev" title="python setup.py 打包与发布">
+      <i class="fa fa-chevron-left"></i> python setup.py 打包与发布
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+	<div>
+		
+		<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------ 本文结束 ------</div>
+    
+</div>
+		
+	 </div>
   </article>
+  
+  
+  
 
-    </div>
   </div>
-  
-  
-  
-
-  
-
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -271,6 +377,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题："><span class="nav-text">问题：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#目前解决方案："><span class="nav-text">目前解决方案：</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
